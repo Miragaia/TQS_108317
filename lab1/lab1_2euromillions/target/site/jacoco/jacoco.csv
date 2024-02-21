@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+lab1_2euromillions,tqs.euromillions,EuromillionsDraw,8,79,0,10,2,17,2,7,2,2
+lab1_2euromillions,tqs.euromillions,CuponEuromillions,46,24,2,0,9,6,3,4,2,4
+lab1_2euromillions,tqs.euromillions,Dip,28,237,8,28,8,48,9,20,1,10
+lab1_2euromillions,tqs,DemoMain,55,0,2,0,14,0,4,0,3,0
+lab1_2euromillions,tqs.sets,BoundedSetOfNaturals,29,132,5,15,8,30,6,14,1,9
