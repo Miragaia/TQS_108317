@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.Dimension;
@@ -18,6 +19,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
@@ -26,20 +30,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 public class TicketPurchaseTest1Test {
   private WebDriver driver;
-  private Map<String, Object> vars;
-  JavascriptExecutor js;
-  @Before
-  public void setUp() {
-    driver = new FirefoxDriver();
-    js = (JavascriptExecutor) driver;
-    vars = new HashMap<String, Object>();
-  }
-  @After
-  public void tearDown() {
-    driver.quit();
-  }
+
   @Test
   public void ticketPurchaseTest1() {
+    WebDriverManager.chromedriver().setup();
+    ChromeOptions options = new ChromeOptions();  
+    options.addArguments("--remote-allow-origins=*");
+    driver = new ChromeDriver(options);
     driver.get("https://blazedemo.com/");
     driver.findElement(By.name("fromPort")).click();
     {
@@ -50,34 +47,31 @@ public class TicketPurchaseTest1Test {
     driver.findElement(By.name("toPort")).click();
     {
       WebElement dropdown = driver.findElement(By.name("toPort"));
-      dropdown.findElement(By.xpath("//option[. = 'Berlin']")).click();
+      dropdown.findElement(By.xpath("//option[. = 'Rome']")).click();
     }
-    driver.findElement(By.cssSelector(".form-inline:nth-child(4) > option:nth-child(4)")).click();
+    driver.findElement(By.cssSelector(".form-inline:nth-child(4) > option:nth-child(2)")).click();
     driver.findElement(By.cssSelector(".btn-primary")).click();
     driver.findElement(By.cssSelector("tr:nth-child(5) .btn")).click();
     driver.findElement(By.id("inputName")).click();
-    driver.findElement(By.id("inputName")).sendKeys("Antonio");
-    driver.findElement(By.id("address")).click();
-    driver.findElement(By.id("address")).sendKeys("Viseu,Portugal");
-    driver.findElement(By.id("city")).click();
-    driver.findElement(By.id("city")).sendKeys("Viseu");
+    driver.findElement(By.id("inputName")).sendKeys("Miguel");
     driver.findElement(By.id("address")).click();
     driver.findElement(By.id("address")).sendKeys("Rua S Francisco");
+    driver.findElement(By.id("city")).click();
+    driver.findElement(By.id("city")).sendKeys("Viseu");
     driver.findElement(By.id("state")).click();
     driver.findElement(By.id("state")).sendKeys("Viseu");
     driver.findElement(By.id("zipCode")).click();
-    driver.findElement(By.id("zipCode")).sendKeys("3515-189");
-    driver.findElement(By.id("cardType")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("cardType"));
-      dropdown.findElement(By.xpath("//option[. = 'Diner\'s Club']")).click();
-    }
+    driver.findElement(By.id("zipCode")).sendKeys("1234");
     driver.findElement(By.cssSelector("option:nth-child(3)")).click();
+    driver.findElement(By.id("creditCardNumber")).click();
+    driver.findElement(By.id("creditCardNumber")).sendKeys("12345");
+    driver.findElement(By.id("creditCardMonth")).click();
+    driver.findElement(By.id("creditCardMonth")).sendKeys("12");
     driver.findElement(By.id("creditCardYear")).click();
-    driver.findElement(By.id("creditCardYear")).sendKeys("2003");
+    driver.findElement(By.id("creditCardYear")).sendKeys("2008");
     driver.findElement(By.id("nameOnCard")).click();
     driver.findElement(By.id("nameOnCard")).sendKeys("Antonio Pascoal");
-    driver.findElement(By.id("rememberMe")).click();
+    driver.findElement(By.cssSelector(".checkbox")).click();
     driver.findElement(By.cssSelector(".btn-primary")).click();
   }
 }
