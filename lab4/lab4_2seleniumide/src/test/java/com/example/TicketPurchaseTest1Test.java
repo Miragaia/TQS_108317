@@ -73,5 +73,6 @@ public class TicketPurchaseTest1Test {
     driver.findElement(By.id("nameOnCard")).sendKeys("Antonio Pascoal");
     driver.findElement(By.cssSelector(".checkbox")).click();
     driver.findElement(By.cssSelector(".btn-primary")).click();
+    driver.quit();
   }
 }
