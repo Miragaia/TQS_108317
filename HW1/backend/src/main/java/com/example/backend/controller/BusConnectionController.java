@@ -22,6 +22,10 @@ public class BusConnectionController {
         List<BusConnection> busConnections = busConnectionService.getAllBusConnections();
         return new ResponseEntity<>(busConnections, HttpStatus.OK);
     }
-    
-    // Implement other endpoints as needed
+
+    @GetMapping("/origin/{origin}/destination/{destination}")
+    public ResponseEntity<List<BusConnection>> getBusConnectionByOriginAndDestination(@PathVariable String origin, @PathVariable String destination) {
+        List<BusConnection> busConnections = busConnectionService.getBusConnectionsByOriginAndDestination(origin, destination);
+        return new ResponseEntity<>(busConnections, HttpStatus.OK);
+    }
 }

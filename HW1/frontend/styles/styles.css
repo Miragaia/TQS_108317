@@ -109,7 +109,7 @@ button {
 #tripTable th, #tripTable td {
     padding: 0.5rem;
     border-bottom: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
     font-size: 0.9rem; /* Smaller font size */
 }
 

@@ -79,13 +79,9 @@ document.getElementById("searchButton").addEventListener("click", function(event
                 return response.json();
             })
             .then(data => {
-                // Redirect to trips.html with the retrieved data
-                const queryParams = new URLSearchParams({
-                    origin: origin,
-                    destination: destination,
-                    data: JSON.stringify(data)
-                });
-                window.location.href = `trips.html?${queryParams}`;
+                localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
+                // Redirect to trips.html
+                window.location.href = `trips.html?origin=${origin}&destination=${destination}`;
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
