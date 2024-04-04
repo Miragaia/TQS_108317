@@ -62,6 +62,40 @@ button {
     flex: 2;
 }
 
+#busConnectionTable {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 0 auto; /* Center the table horizontally */
+}
+
+#busConnectionTable th, #busConnectionTable td {
+    padding: 0.3rem;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    font-size: 0.9rem; /* Smaller font size */
+}
+
+#busConnectionTable th {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.5rem;
+    font-size: 0.9rem; /* Smaller font size */
+}
+
+#busConnectionTable tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+#busConnectionTable tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+#busConnectionTable td:last-child {
+    text-align: center;
+}
+
+
 /* Styles for trips.html */
 
 

@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "bus_connections")
@@ -15,10 +18,21 @@ public class BusConnection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conId;
     
+    @NotBlank(message = "Origin is required")
+    @Size(max = 100, message = "Origin must be at most 100 characters")
     private String origin;
+    
+    @NotBlank(message = "Destination is required")
+    @Size(max = 100, message = "Destination must be at most 100 characters")
     private String destination;
+    
+    @NotBlank(message = "Departure time is required")
     private String departureTime;
+    
+    @NotBlank(message = "Arrival time is required")
     private String arrivalTime;
+    
+    @NotNull(message = "Price is required")
     private double price;
     
 

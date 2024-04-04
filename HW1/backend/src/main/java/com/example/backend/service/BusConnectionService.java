@@ -41,4 +41,8 @@ public class BusConnectionService {
     public List<BusConnection> getBusConnectionsByOriginAndDestination(String origin, String destination) {
         return busConnectionRepository.findByOriginAndDestination(origin, destination);
     }
+
+    public List<BusConnection> saveAllBusConnections(List<BusConnection> busConnections) {
+        return busConnectionRepository.saveAll(busConnections);
+    }
 }

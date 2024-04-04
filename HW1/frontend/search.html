@@ -11,9 +11,9 @@
         <h1>Bus Ticket Booking</h1>
     </header>
     <main>
-        <form id="searchForm" action="trips.html">
-            <h1>Welcome to the Bus Ticket Store!</p>
-                <h2>Please  enter your search details:</h2>
+        <form id="searchForm">
+            <h1>Welcome to the Bus Ticket Store!</h1>
+            <h2>Please enter your search details:</h2>
             <div class="inputGroup">
                 <label for="origin">Departure:</label>
                 <input type="text" id="origin" name="origin">
@@ -24,8 +24,21 @@
             </div>
             <button id="searchButton" type="button">Search</button>
         </form>
+        <table id="busConnectionTable">
+            <thead>
+                <tr>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="busConnectionTableBody"></tbody>
+        </table>
     </main>
     <script src="scripts/search.js"></script>
 </body>
 </html>
+
 
