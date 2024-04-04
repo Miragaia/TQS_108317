@@ -22,10 +22,6 @@ public class BusConnectionService {
     //     return busConnectionRepository.findById(conId).orElse(null);
     // }
 
-    // public List<BusConnection> getBusConnectionsByOriginAndDestination(String origin, String destination) {
-    //     return busConnectionRepository.findByOriginAndDestination(origin, destination);
-    // }
-
     public List<BusConnection> getBusConnectionsByOriginAndDestinationAndDepartureDate(String origin, String destination, String departureDate) {
         return busConnectionRepository.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
     }

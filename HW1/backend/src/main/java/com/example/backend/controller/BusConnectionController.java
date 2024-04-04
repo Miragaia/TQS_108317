@@ -23,12 +23,6 @@ public class BusConnectionController {
         return new ResponseEntity<>(busConnections, HttpStatus.OK);
     }
 
-    // @GetMapping("/origin/{origin}/destination/{destination}")
-    // public ResponseEntity<List<BusConnection>> getBusConnectionByOriginAndDestination(@PathVariable String origin, @PathVariable String destination) {
-    //     List<BusConnection> busConnections = busConnectionService.getBusConnectionsByOriginAndDestination(origin, destination);
-    //     return new ResponseEntity<>(busConnections, HttpStatus.OK);
-    // }
-
     @GetMapping("/origin/{origin}/destination/{destination}/departure-date/{departureDate}")
     public ResponseEntity<List<BusConnection>> getBusConnectionByOriginAndDestinationAndDepartureDate(@PathVariable String origin, @PathVariable String destination, @PathVariable String departureDate) {
         List<BusConnection> busConnections = busConnectionService.getBusConnectionsByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
