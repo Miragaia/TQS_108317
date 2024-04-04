@@ -15,4 +15,6 @@ public interface BusConnectionRepository extends JpaRepository<BusConnection, Lo
     List<BusConnection> findByDestination(String destination);
 
     List<BusConnection> findByOriginAndDestination(String origin, String destination);
+
+    List<BusConnection> findByOriginAndDestinationAndDepartureDate(String origin, String destination, String departureDate);
 }

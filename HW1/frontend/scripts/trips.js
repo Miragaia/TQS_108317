@@ -4,12 +4,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const origin = urlParams.get('origin');
     const destination = urlParams.get('destination');
+    const departureDate = urlParams.get('departureDate');
     const storedData = localStorage.getItem('busConnections'); // Retrieve data from localStorage
     const data = storedData ? JSON.parse(storedData) : [];
 
     // Filter bus connections based on origin and destination
     const filteredData = data.filter(connection => {
-        return connection.origin === origin && connection.destination === destination;
+        return connection.origin === origin && connection.destination === destination && connection.departureDate === departureDate;
     });
 
     // Display filtered bus connections
@@ -28,9 +29,12 @@ function displayBusConnections(busConnections) {
             <td>${connection.conId}</td>
             <td>${connection.origin}</td>
             <td>${connection.destination}</td>
+            <td>${connection.departureDate}</td>
+            <td>${connection.arrivalDate}</td>
             <td>${connection.departureTime}</td>
             <td>${connection.arrivalTime}</td>
             <td>${connection.price}</td>
+            <td>${connection.totalSeats}</td>
             <td><button class="selectTripButton" data-trip-id="${connection.conId}">Select Trip</button></td>
         `;
         tableBody.appendChild(row);

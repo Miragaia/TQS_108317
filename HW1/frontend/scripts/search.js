@@ -68,10 +68,12 @@ document.getElementById("searchButton").addEventListener("click", function(event
     event.preventDefault();
     const origin = document.getElementById("origin").value;
     const destination = document.getElementById("destination").value;
+    const departureDate = document.getElementById("departureDate").value;
+    
 
     if (origin && destination && destination !== "Select destination") {
         // Make a GET request to the backend API to search for bus connections
-        fetch(`http://localhost:8080/api/bus-connections?origin=${origin}&destination=${destination}`)
+        fetch(`http://localhost:8080/api/bus-connections?origin=${origin}&destination=${destination}&departureDate=${departureDate}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -81,7 +83,7 @@ document.getElementById("searchButton").addEventListener("click", function(event
             .then(data => {
                 localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
                 // Redirect to trips.html
-                window.location.href = `trips.html?origin=${origin}&destination=${destination}`;
+                window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -103,9 +105,12 @@ function displayBusConnections(busConnections) {
         row.innerHTML = `
             <td>${connection.origin}</td>
             <td>${connection.destination}</td>
+            <td>${connection.departureDate}</td>
+            <td>${connection.arrivalDate}</td>
             <td>${connection.departureTime}</td>
             <td>${connection.arrivalTime}</td>
             <td>${connection.price}</td>
+            <td>${connection.totalSeats}</td>
         `;
         tableBody.appendChild(row);
     });

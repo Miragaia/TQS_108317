@@ -1,14 +1,18 @@
 package com.example.backend.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "bus_connections")
@@ -19,30 +23,57 @@ public class BusConnection {
     private Long conId;
     
     @NotBlank(message = "Origin is required")
-    @Size(max = 100, message = "Origin must be at most 100 characters")
     private String origin;
     
     @NotBlank(message = "Destination is required")
-    @Size(max = 100, message = "Destination must be at most 100 characters")
     private String destination;
+
+    @NotBlank(message = "Departure date is required")
+    private String departureDate;
+
+    @NotBlank(message = "Arrival date is required")
+    private String arrivalDate;
     
     @NotBlank(message = "Departure time is required")
     private String departureTime;
     
-    @NotBlank(message = "Arrival time is required")
+    @NotBlank(message = "Arrival time is required")     //talvez tirar e arrival date tambem, preco tambem
     private String arrivalTime;
+
+    private int totalSeats;
     
     @NotNull(message = "Price is required")
     private double price;
-    
 
-    public BusConnection(String origin, String destination, String departureTime, String arrivalTime, double price) {
+    // @OneToMany(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "bus_connection_id")
+    // private List<Seat> seats;
+
+
+    // public BusConnection(String origin, String destination, String departureDate, String arrivalDate, String departureTime, String arrivalTime, double price, List<Seat> seats, int totalSeats) {
+    //     this.origin = origin;
+    //     this.destination = destination;
+    //     this.departureDate = departureDate;
+    //     this.arrivalDate = arrivalDate;
+    //     this.departureTime = departureTime;
+    //     this.arrivalTime = arrivalTime;
+    //     this.price = price;
+    //     this.seats = seats;
+    //     this.totalSeats = totalSeats;
+    // }
+
+    public BusConnection(String origin, String destination, String departureDate, String arrivalDate, String departureTime, String arrivalTime, double price, int totalSeats) {
         this.origin = origin;
         this.destination = destination;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.price = price;
+        this.totalSeats = totalSeats;
     }
+
+
 
     public BusConnection() {
     }
@@ -71,6 +102,22 @@ public class BusConnection {
         this.destination = destination;
     }
 
+    public String getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(String departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public String getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(String arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
     public String getDepartureTime() {
         return departureTime;
     }
@@ -95,15 +142,35 @@ public class BusConnection {
         this.price = price;
     }
 
+    //getters e setter dos seats
+    // public List<Seat> getSeats() {
+    //     return seats;
+    // }
+
+    // public void setSeats(List<Seat> seats) {
+    //     this.seats = seats;
+    // }
+
+    public int getTotalSeats() {
+        return totalSeats;
+    }
+
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
     @Override
     public String toString() {
         return "BusConnection{" +
                 "conId=" + conId +
                 ", origin='" + origin + '\'' +
                 ", destination='" + destination + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                ", arrivalDate='" + arrivalDate + '\'' +
                 ", departureTime='" + departureTime + '\'' +
                 ", arrivalTime='" + arrivalTime + '\'' +
                 ", price=" + price +
+                // ", seats=" + seats +
                 '}';
     }
 }

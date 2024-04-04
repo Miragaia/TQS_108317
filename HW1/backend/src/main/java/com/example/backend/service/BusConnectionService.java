@@ -17,29 +17,17 @@ public class BusConnectionService {
     public List<BusConnection> getAllBusConnections() {
         return busConnectionRepository.findAll();
     }
-    
-    public BusConnection saveBusConnection(BusConnection busConnection) {           //confirmar busConnection
-        return busConnectionRepository.save(busConnection);     
-    }
 
-    public void deleteBusConnection(Long conId) {
-        busConnectionRepository.deleteById(conId);
-    }
+    // public BusConnection getBusConnectionById(Long conId) {
+    //     return busConnectionRepository.findById(conId).orElse(null);
+    // }
 
-    public BusConnection getBusConnectionById(Long conId) {
-        return busConnectionRepository.findById(conId).orElse(null);
-    }
+    // public List<BusConnection> getBusConnectionsByOriginAndDestination(String origin, String destination) {
+    //     return busConnectionRepository.findByOriginAndDestination(origin, destination);
+    // }
 
-    public List<BusConnection> getBusConnectionsByOrigin(String origin) {
-        return busConnectionRepository.findByOrigin(origin);
-    }
-
-    public List<BusConnection> getBusConnectionsByDestination(String destination) {
-        return busConnectionRepository.findByDestination(destination);
-    }
-
-    public List<BusConnection> getBusConnectionsByOriginAndDestination(String origin, String destination) {
-        return busConnectionRepository.findByOriginAndDestination(origin, destination);
+    public List<BusConnection> getBusConnectionsByOriginAndDestinationAndDepartureDate(String origin, String destination, String departureDate) {
+        return busConnectionRepository.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
     }
 
     public List<BusConnection> saveAllBusConnections(List<BusConnection> busConnections) {
