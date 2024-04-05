@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const storedData = localStorage.getItem('busConnections'); // Retrieve data from localStorage
     const data = storedData ? JSON.parse(storedData) : [];
 
-    // Display filtered bus connections
+    
     displayBusConnections(data);
 });
 

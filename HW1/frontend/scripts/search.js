@@ -80,16 +80,13 @@ document.getElementById("searchButton").addEventListener("click", function(event
                 return response.json();
             })
             .then(data => {
-                const hasData = data.some(connection => Object.keys(connection).length > 0);
-                if (hasData) {
+                if (data.length > 0) {
                     localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
                     // Redirect to trips.html
                     window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
                 } else {
                     console.log("No bus connections found.");
                     alert("No bus connections found for the selected criteria.");
-                    // Display a message to the user indicating no bus connections were found
-                    // For example: alert("No bus connections found for the selected criteria.");
                 }
             })
             .catch(error => {

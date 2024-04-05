@@ -35,9 +35,6 @@ public class BusConnectionController {
         List<BusConnection> busConnections = busConnectionService.getBusConnectionsByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
         logger.info(busConnections.size() + " bus connections found.");
         logger.info("Bus connections: " + busConnections);
-        if (busConnections.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Return 404 status code
-        }
         return new ResponseEntity<>(busConnections, HttpStatus.OK);
     }
 
