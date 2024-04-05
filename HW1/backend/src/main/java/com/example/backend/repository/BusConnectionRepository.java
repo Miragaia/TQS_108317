@@ -10,5 +10,5 @@ import com.example.backend.model.BusConnection;
 @Repository
 public interface BusConnectionRepository extends JpaRepository<BusConnection, Long> {
 
-    List<BusConnection> findByOriginAndDestinationAndDepartureDate(String origin, String destination, String departureDate);
+    public List<BusConnection> findByOriginAndDestinationAndDepartureDate(String origin, String destination, String departureDate);
 }

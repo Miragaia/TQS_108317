@@ -8,24 +8,37 @@ import org.springframework.web.bind.annotation.*;
 import com.example.backend.model.BusConnection;
 import com.example.backend.service.BusConnectionService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/bus-connections")
 public class BusConnectionController {
     
+    private static final Logger logger = LogManager.getLogger(BusConnectionController.class);
+
     @Autowired
     private BusConnectionService busConnectionService;
     
     @GetMapping
     public ResponseEntity<List<BusConnection>> getAllBusConnections() {
+        logger.info("Fetching all bus connections.");
         List<BusConnection> busConnections = busConnectionService.getAllBusConnections();
         return new ResponseEntity<>(busConnections, HttpStatus.OK);
     }
 
-    @GetMapping("/origin/{origin}/destination/{destination}/departure-date/{departureDate}")
-    public ResponseEntity<List<BusConnection>> getBusConnectionByOriginAndDestinationAndDepartureDate(@PathVariable String origin, @PathVariable String destination, @PathVariable String departureDate) {
+    @GetMapping("/{origin}/{destination}/{departureDate}")
+    public ResponseEntity<?> getBusConnectionByOriginAndDestinationAndDepartureDate(@PathVariable String origin, @PathVariable String destination, @PathVariable String departureDate) {
+        logger.info("Fetching bus connections by origin {}, destination {}, and departure date {}.", origin, destination, departureDate);
         List<BusConnection> busConnections = busConnectionService.getBusConnectionsByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
+        logger.info(busConnections.size() + " bus connections found.");
+        logger.info("Bus connections: " + busConnections);
+        if (busConnections.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Return 404 status code
+        }
         return new ResponseEntity<>(busConnections, HttpStatus.OK);
     }
+
 }

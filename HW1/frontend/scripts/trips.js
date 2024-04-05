@@ -8,13 +8,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const storedData = localStorage.getItem('busConnections'); // Retrieve data from localStorage
     const data = storedData ? JSON.parse(storedData) : [];
 
-    // Filter bus connections based on origin and destination
-    const filteredData = data.filter(connection => {
-        return connection.origin === origin && connection.destination === destination && connection.departureDate === departureDate;
-    });
-
     // Display filtered bus connections
-    displayBusConnections(filteredData);
+    displayBusConnections(data);
 });
 
 

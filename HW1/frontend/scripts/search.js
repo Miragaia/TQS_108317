@@ -69,11 +69,10 @@ document.getElementById("searchButton").addEventListener("click", function(event
     const origin = document.getElementById("origin").value;
     const destination = document.getElementById("destination").value;
     const departureDate = document.getElementById("departureDate").value;
-    
 
     if (origin && destination && destination !== "Select destination") {
         // Make a GET request to the backend API to search for bus connections
-        fetch(`http://localhost:8080/api/bus-connections?origin=${origin}&destination=${destination}&departureDate=${departureDate}`)
+        fetch(`http://localhost:8080/api/bus-connections/${origin}/${destination}/${departureDate}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -81,9 +80,17 @@ document.getElementById("searchButton").addEventListener("click", function(event
                 return response.json();
             })
             .then(data => {
-                localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
-                // Redirect to trips.html
-                window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
+                const hasData = data.some(connection => Object.keys(connection).length > 0);
+                if (hasData) {
+                    localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
+                    // Redirect to trips.html
+                    window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
+                } else {
+                    console.log("No bus connections found.");
+                    alert("No bus connections found for the selected criteria.");
+                    // Display a message to the user indicating no bus connections were found
+                    // For example: alert("No bus connections found for the selected criteria.");
+                }
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -92,6 +99,11 @@ document.getElementById("searchButton").addEventListener("click", function(event
         alert("Please select both departure and destination cities.");
     }
 });
+
+
+
+
+
 
 
 

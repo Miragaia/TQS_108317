@@ -22,27 +22,27 @@ public class BusConnection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conId;
     
-    @NotBlank(message = "Origin is required")
+    // @NotBlank(message = "Origin is required")
     private String origin;
     
-    @NotBlank(message = "Destination is required")
+    // @NotBlank(message = "Destination is required")
     private String destination;
 
-    @NotBlank(message = "Departure date is required")
+    // @NotBlank(message = "Departure date is required")
     private String departureDate;
 
-    @NotBlank(message = "Arrival date is required")
+    // @NotBlank(message = "Arrival date is required")
     private String arrivalDate;
     
-    @NotBlank(message = "Departure time is required")
+    // @NotBlank(message = "Departure time is required")
     private String departureTime;
     
-    @NotBlank(message = "Arrival time is required")     //talvez tirar e arrival date tambem, preco tambem
+    // @NotBlank(message = "Arrival time is required")     //talvez tirar e arrival date tambem, preco tambem
     private String arrivalTime;
 
     private int totalSeats;
     
-    @NotNull(message = "Price is required")
+    // @NotNull(message = "Price is required")
     private double price;
 
     // @OneToMany(cascade = CascadeType.ALL)
@@ -72,8 +72,6 @@ public class BusConnection {
         this.price = price;
         this.totalSeats = totalSeats;
     }
-
-
 
     public BusConnection() {
     }
@@ -157,20 +155,5 @@ public class BusConnection {
 
     public void setTotalSeats(int totalSeats) {
         this.totalSeats = totalSeats;
-    }
-
-    @Override
-    public String toString() {
-        return "BusConnection{" +
-                "conId=" + conId +
-                ", origin='" + origin + '\'' +
-                ", destination='" + destination + '\'' +
-                ", departureDate='" + departureDate + '\'' +
-                ", arrivalDate='" + arrivalDate + '\'' +
-                ", departureTime='" + departureTime + '\'' +
-                ", arrivalTime='" + arrivalTime + '\'' +
-                ", price=" + price +
-                // ", seats=" + seats +
-                '}';
     }
 }
