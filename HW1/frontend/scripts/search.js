@@ -97,9 +97,16 @@ document.getElementById("searchButton").addEventListener("click", function(event
     }
 });
 
+// Define a global variable to store the base price
+let basePrice = 50; // Example base price in USD
+
+// Define a global variable to store the current target currency
+let currentTargetCurrency = 'USD'; // Default target currency
+
 // Function to fetch exchange rates
-function fetchExchangeRates(baseCurrency) {
-    fetch(`http://localhost:8080/cache-exchange-rates/${baseCurrency}`)
+function fetchExchangeRates(baseCurrency, targetCurrency) {
+    const url = `http://localhost:8080/cache-exchange-rates/${baseCurrency}/${targetCurrency}`;
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -107,25 +114,44 @@ function fetchExchangeRates(baseCurrency) {
             return response.json();
         })
         .then(data => {
-            // Process the received exchange rates data and display it
-            const exchangeRatesDiv = document.getElementById('exchangeRates');
-            exchangeRatesDiv.innerHTML = `<h2>Exchange Rates for ${baseCurrency}</h2>`;
-            console.log(data);
-            for (const [currency, rate] of Object.entries(data)) {
-                exchangeRatesDiv.innerHTML += `<p>${currency}: ${rate}</p>`;
+            // If the target currency changes, update the current target currency
+            const exchangeRate = data;
+            if (currentTargetCurrency !== targetCurrency) {
+                basePrice *= exchangeRate; // Update the base price based on the previous target currency
+                currentTargetCurrency = targetCurrency; // Update the current target currency
             }
+            
+            // Calculate the price in the target currency using the updated base price
+            const price = basePrice / exchangeRate;
+
+            // Display the calculated price
+            const priceDiv = document.getElementById('price');
+            priceDiv.innerHTML = `<p>Price in ${targetCurrency}: ${price}</p>`;
         })
         .catch(error => {
             console.error('Error fetching exchange rates:', error);
         });
 }
 
+// Initialize base currency as USD
+let baseCurrency = 'USD';
+let targetCurrency = '';
+
 // Event listener for base currency selection
 const baseCurrencySelect = document.getElementById('baseCurrency');
+
 baseCurrencySelect.addEventListener('change', function() {
-    const selectedCurrency = baseCurrencySelect.value;
-    fetchExchangeRates(selectedCurrency);
+    // Store the previously selected base currency as target currency
+    targetCurrency = baseCurrency;
+
+    // Update the base currency with the newly selected value
+    baseCurrency = baseCurrencySelect.value;
+
+    // Fetch exchange rates with the new base and target currencies
+    fetchExchangeRates(baseCurrency, targetCurrency);
 });
+
+
 
 
 // Function to display bus connections in a table

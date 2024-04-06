@@ -27,9 +27,9 @@ public class ExchangeRateController {
         this.exchangeRateService = exchangeRateService;
     }
 
-    @GetMapping("/cache-exchange-rates/{targetCurrency}")
-    public double cacheExchangeRatesForUSD(@PathVariable String targetCurrency) throws ParseException, IOException{
-        logger.info("Caching exchange rates for target currency {}.", targetCurrency);
-        return exchangeRateService.getExchangeRatesCache(targetCurrency);
+    @GetMapping("/cache-exchange-rates/{baseCurrency}/{targetCurrency}")
+    public double cacheExchangeRatesForCurrency(@PathVariable String baseCurrency, @PathVariable String targetCurrency) throws ParseException, IOException {
+        logger.info("Caching exchange rates from {} to {}.", baseCurrency, targetCurrency);
+        return exchangeRateService.getExchangeRatesCache(baseCurrency, targetCurrency);
     }
 }

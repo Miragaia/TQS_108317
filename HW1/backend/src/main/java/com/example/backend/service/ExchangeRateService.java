@@ -37,28 +37,28 @@ public class ExchangeRateService {
         this.CacheExchangeRate = new HashMap<>();
     }
     
-    @Cacheable(value = "exchangeRates", key = "#targetCurrency")
-    public double getExchangeRatesCache(String targetCurrency) throws IOException, ParseException {
-        logger.info("Fetching exchange rates cache for target currency {}",targetCurrency);
+    @Cacheable(value = "exchangeRates", key = "#baseCurrency + '_' + #targetCurrency")
+    public double getExchangeRatesCache(String baseCurrency, String targetCurrency) throws IOException, ParseException {
+        logger.info("Fetching exchange rates cache from {} to {}.", baseCurrency, targetCurrency);
         String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_3ucCp3INikY7NxAxE8vKtPK5JqgE5DE01Se0D7hL";
         try {
-            String key = targetCurrency;
+            String key = baseCurrency + "_" + targetCurrency;
             
             if (CacheExchangeRate.containsKey(key)) {
-                logger.info("Cache updated to " + targetCurrency + " exchange rate value: " + CacheExchangeRate.get(key));
+                logger.info("Cache updated to exchange rate value from {} to {}: {}", baseCurrency, targetCurrency, CacheExchangeRate.get(key));
                 return CacheExchangeRate.get(key);
             } else {
                 logger.info("Error fetching cache, fetching from API");
-                String requestUrl = apiUrl + "&currencies=" + targetCurrency;
+                String requestUrl = apiUrl + "&currencies=" + targetCurrency + "&base_currency=" + baseCurrency ;
                 String response = httpClient.doHttpGet(requestUrl);
                 double exchangeRate = parseExchangeRateFromResponse(response, targetCurrency);
-    
-                logger.info("Exchange rate to " + targetCurrency + " is " + exchangeRate + " retrieved from API");
-    
+
+                logger.info("Exchange rate from {} to {} is {} retrieved from API", baseCurrency, targetCurrency, exchangeRate);
+
                 CacheExchangeRate.put(key, exchangeRate);
-    
-                logger.info("Cache updated to " + targetCurrency + " exchange rate value: " + exchangeRate);
-    
+
+                logger.info("Cache updated to exchange rate value from {} to {}: {}", baseCurrency, targetCurrency, exchangeRate);
+
                 return exchangeRate;
             }
         } catch (Exception e) {
@@ -66,6 +66,7 @@ public class ExchangeRateService {
             return 0.0;
         }
     }
+
 
     @CacheEvict(cacheNames = "exchangeRates", allEntries = true)
     public void clearCache() {
