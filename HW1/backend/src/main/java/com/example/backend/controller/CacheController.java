@@ -79,9 +79,6 @@ public class CacheController {
         CaffeineCacheManager primaryCacheManager = context.getBean(CaffeineCacheManager.class);
         result.put("PrimaryCacheManager", inspectCacheManager(primaryCacheManager));
 
-        // CaffeineCacheManager exchangeRatesCacheManager = (CaffeineCacheManager) context.getBean("exchangeRates");
-        // result.put("ExchangeRatesCacheManager", inspectCacheManager(exchangeRatesCacheManager));
-
         return result;
     }
 

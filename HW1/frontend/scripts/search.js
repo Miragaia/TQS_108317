@@ -100,11 +100,11 @@ document.getElementById("searchButton").addEventListener("click", function(event
 
 // Fetch exchange rates for USD upon page load to populate the cache
 document.addEventListener('DOMContentLoaded', function() {
-    cacheExchangeRates('USD');
+    cacheExchangeRates();
 });
 
 // Function to fetch and cache exchange rates
-function cacheExchangeRates(baseCurrency) {
+function cacheExchangeRates() {
     fetch(`http://localhost:8080/cache-exchange-rates`)
         .then(response => {
             if (!response.ok) {
