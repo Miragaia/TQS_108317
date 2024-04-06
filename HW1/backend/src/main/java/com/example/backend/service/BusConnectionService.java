@@ -18,9 +18,9 @@ public class BusConnectionService {
         return busConnectionRepository.findAll();
     }
 
-    // public BusConnection getBusConnectionById(Long conId) {
-    //     return busConnectionRepository.findById(conId).orElse(null);
-    // }
+    public BusConnection getBusConnectionById(Long conId) {
+        return busConnectionRepository.findById(conId).orElse(null);
+    }
 
     public List<BusConnection> getBusConnectionsByOriginAndDestinationAndDepartureDate(String origin, String destination, String departureDate) {
         return busConnectionRepository.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);

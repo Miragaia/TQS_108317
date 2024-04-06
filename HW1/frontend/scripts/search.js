@@ -97,29 +97,9 @@ document.getElementById("searchButton").addEventListener("click", function(event
     }
 });
 
-
-// Fetch exchange rates for USD upon page load to populate the cache
-document.addEventListener('DOMContentLoaded', function() {
-    cacheExchangeRates();
-});
-
-// Function to fetch and cache exchange rates
-function cacheExchangeRates() {
-    fetch(`http://localhost:8080/cache-exchange-rates`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            console.log('Exchange rates cached for USD');
-        })
-        .catch(error => {
-            console.error('Error caching exchange rates:', error);
-        });
-}
-
 // Function to fetch exchange rates
 function fetchExchangeRates(baseCurrency) {
-    fetch(`http://localhost:8080/test-exchange/${baseCurrency}`)
+    fetch(`http://localhost:8080/cache-exchange-rates/${baseCurrency}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -130,6 +110,7 @@ function fetchExchangeRates(baseCurrency) {
             // Process the received exchange rates data and display it
             const exchangeRatesDiv = document.getElementById('exchangeRates');
             exchangeRatesDiv.innerHTML = `<h2>Exchange Rates for ${baseCurrency}</h2>`;
+            console.log(data);
             for (const [currency, rate] of Object.entries(data)) {
                 exchangeRatesDiv.innerHTML += `<p>${currency}: ${rate}</p>`;
             }
@@ -143,7 +124,7 @@ function fetchExchangeRates(baseCurrency) {
 const baseCurrencySelect = document.getElementById('baseCurrency');
 baseCurrencySelect.addEventListener('change', function() {
     const selectedCurrency = baseCurrencySelect.value;
-    // fetchExchangeRates(selectedCurrency);
+    fetchExchangeRates(selectedCurrency);
 });
 
 

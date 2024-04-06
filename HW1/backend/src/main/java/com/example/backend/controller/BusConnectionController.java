@@ -12,6 +12,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/bus-connections")
@@ -37,5 +40,13 @@ public class BusConnectionController {
         logger.info("Bus connections: " + busConnections);
         return new ResponseEntity<>(busConnections, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BusConnection> getBusConnectionById(@PathVariable Long id) {
+        logger.info("Fetching bus connection by id {}.", id);
+        BusConnection busConnection = busConnectionService.getBusConnectionById(id);
+        return new ResponseEntity<>(busConnection, HttpStatus.OK);
+    }
+    
 
 }

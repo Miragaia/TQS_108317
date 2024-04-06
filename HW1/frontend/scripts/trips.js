@@ -10,6 +10,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     displayBusConnections(data);
+
+    // Add event listener to handle button clicks
+    const selectTripButtons = document.querySelectorAll(".selectTripButton");
+    selectTripButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const tripId = button.dataset.tripId;
+            // Redirect to reservation page with selected trip ID as query parameter
+            window.location.href = `reservation.html?tripId=${tripId}`;
+        });
+    });
 });
 
 

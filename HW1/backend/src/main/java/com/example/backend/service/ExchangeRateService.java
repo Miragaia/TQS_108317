@@ -1,9 +1,11 @@
 package com.example.backend.service;
 
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,55 +16,68 @@ import org.springframework.web.client.RestTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.cache.annotation.CacheEvict;
+
+import com.example.backend.config.CacheConfig;
+import com.example.backend.http.HttpClient;
+
 @Service
 public class ExchangeRateService {
 
-    private final RestTemplate restTemplate;
+    private final HttpClient httpClient;
+    private final Map<String, Double> CacheExchangeRate;
 
     private static final Logger logger = LogManager.getLogger(ExchangeRateService.class);
 
-    public ExchangeRateService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public ExchangeRateService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        this.CacheExchangeRate = new HashMap<>();
     }
-
-    public Map<String, BigDecimal> getExchangeRates(String baseCurrency) {
-        String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_3ucCp3INikY7NxAxE8vKtPK5JqgE5DE01Se0D7hL";
-        try {
-            ResponseEntity<Map> responseEntity = restTemplate.getForEntity(apiUrl, Map.class);
-            if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                Map<String, BigDecimal> rates = (Map<String, BigDecimal>) responseEntity.getBody().get("data");
-                logger.info("Fetched exchange rates: {}", rates);
-                return rates;
-            } else {
-                logger.error("Failed to fetch exchange rates. Status code: {}", responseEntity.getStatusCode());
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred while fetching exchange rates", e);
-        }
-        return null;
-    }
-
     
-    @Cacheable(value = "exchangeRates")
-    public Map<String, BigDecimal> getExchangeRatesCache(String baseCurrency) {
-        logger.info("Fetching exchange rates cache for base currency {}.", baseCurrency);
+    @Cacheable(value = "exchangeRates", key = "#targetCurrency")
+    public double getExchangeRatesCache(String targetCurrency) throws IOException, ParseException {
+        logger.info("Fetching exchange rates cache for target currency {}",targetCurrency);
         String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_3ucCp3INikY7NxAxE8vKtPK5JqgE5DE01Se0D7hL";
         try {
-            ResponseEntity<Map> responseEntity = restTemplate.getForEntity(apiUrl, Map.class);
-            if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                Map<String, BigDecimal> rates = (Map<String, BigDecimal>) responseEntity.getBody().get("data");
-                logger.info("Fetched cache exchange rates: {}", rates);
-                return rates;
+            String key = targetCurrency;
+            
+            if (CacheExchangeRate.containsKey(key)) {
+                logger.info("Cache updated to " + targetCurrency + " exchange rate value: " + CacheExchangeRate.get(key));
+                return CacheExchangeRate.get(key);
             } else {
-                logger.error("Failed to fetch cache exchange rates. Status code: {}", responseEntity.getStatusCode());
-                // Throw a custom exception here if needed
-                return Collections.emptyMap(); // Return an empty map instead of null
+                logger.info("Error fetching cache, fetching from API");
+                String requestUrl = apiUrl + "&currencies=" + targetCurrency;
+                String response = httpClient.doHttpGet(requestUrl);
+                double exchangeRate = parseExchangeRateFromResponse(response, targetCurrency);
+    
+                logger.info("Exchange rate to " + targetCurrency + " is " + exchangeRate + " retrieved from API");
+    
+                CacheExchangeRate.put(key, exchangeRate);
+    
+                logger.info("Cache updated to " + targetCurrency + " exchange rate value: " + exchangeRate);
+    
+                return exchangeRate;
             }
         } catch (Exception e) {
             logger.error("Error occurred while fetching cache exchange rates", e);
-            // Throw a custom exception here if needed
-            return Collections.emptyMap(); // Return an empty map instead of null
+            return 0.0;
         }
+    }
+
+    @CacheEvict(cacheNames = "exchangeRates", allEntries = true)
+    public void clearCache() {
+        CacheExchangeRate.clear();
+    }
+
+    private double parseExchangeRateFromResponse(String response, String targetCurrency) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(response);
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        Double Rate = (Double) data.get(targetCurrency);
+        return Rate != null ? Rate : 0.0;
     }
 }
 

@@ -13,6 +13,9 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import org.json.simple.parser.ParseException;
+
 @RestController
 public class ExchangeRateController {
 
@@ -24,16 +27,9 @@ public class ExchangeRateController {
         this.exchangeRateService = exchangeRateService;
     }
 
-    // New endpoint to fetch and cache exchange rates for USD
-    @GetMapping("/cache-exchange-rates")
-    public void cacheExchangeRatesForUSD() {
-        exchangeRateService.getExchangeRatesCache("USD");
-    }
-
-    @GetMapping("/test-exchange/")
-    public Map<String, BigDecimal> ExchangeRatesUSD(@PathVariable String baseCurrency) {
-        logger.info("Fetching exchange rates for base currency {}.", baseCurrency);
-        logger.info("Exchange rates: " + exchangeRateService.getExchangeRates(baseCurrency));
-        return exchangeRateService.getExchangeRates(baseCurrency);
+    @GetMapping("/cache-exchange-rates/{targetCurrency}")
+    public double cacheExchangeRatesForUSD(@PathVariable String targetCurrency) throws ParseException, IOException{
+        logger.info("Caching exchange rates for target currency {}.", targetCurrency);
+        return exchangeRateService.getExchangeRatesCache(targetCurrency);
     }
 }
