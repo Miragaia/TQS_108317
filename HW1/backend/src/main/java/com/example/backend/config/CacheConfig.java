@@ -31,7 +31,7 @@ public class CacheConfig implements CachingConfigurer {
     }
 
 
-    @Bean("exchangeRatesCacheManager")
+    @Bean("exchangeRates")
     public CacheManager exchangeRatesCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCacheNames(Collections.singleton("exchangeRates"));

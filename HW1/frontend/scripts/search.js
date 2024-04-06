@@ -98,36 +98,27 @@ document.getElementById("searchButton").addEventListener("click", function(event
 });
 
 
+// Fetch exchange rates for USD upon page load to populate the cache
+document.addEventListener('DOMContentLoaded', function() {
+    cacheExchangeRates('USD');
+});
 
+// Function to fetch and cache exchange rates
+function cacheExchangeRates(baseCurrency) {
+    fetch(`http://localhost:8080/cache-exchange-rates`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('Exchange rates cached for USD');
+        })
+        .catch(error => {
+            console.error('Error caching exchange rates:', error);
+        });
+}
 
-// document.getElementById('exchangeForm').addEventListener('submit', function(event) {
-//     event.preventDefault();
-//     var baseCurrency = document.getElementById('baseCurrency').value;
-//     fetch('http://localhost:8080/test-exchange/' + baseCurrency)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to fetch exchange rates');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             var exchangeRatesDiv = document.getElementById('exchangeRates');
-//             exchangeRatesDiv.innerHTML = '';
-//             var ratesList = document.createElement('ul');
-//             Object.keys(data).forEach(currency => {
-//                 var rateItem = document.createElement('li');
-//                 rateItem.textContent = currency + ': ' + data[currency];
-//                 ratesList.appendChild(rateItem);
-//             });
-//             exchangeRatesDiv.appendChild(ratesList);
-//         })
-//         .catch(error => {
-//             console.error('Error fetching exchange rates:', error);
-//         });
-// });
-
-function fetchExchangeRates() {
-    const baseCurrency = document.getElementById('baseCurrency').value;
+// Function to fetch exchange rates
+function fetchExchangeRates(baseCurrency) {
     fetch(`http://localhost:8080/test-exchange/${baseCurrency}`)
         .then(response => {
             if (!response.ok) {
@@ -147,6 +138,14 @@ function fetchExchangeRates() {
             console.error('Error fetching exchange rates:', error);
         });
 }
+
+// Event listener for base currency selection
+const baseCurrencySelect = document.getElementById('baseCurrency');
+baseCurrencySelect.addEventListener('change', function() {
+    const selectedCurrency = baseCurrencySelect.value;
+    // fetchExchangeRates(selectedCurrency);
+});
+
 
 // Function to display bus connections in a table
 function displayBusConnections(busConnections) {

@@ -20,20 +20,18 @@ public class ExchangeRateController {
 
     private static final Logger logger = LogManager.getLogger(ExchangeRateController.class);
 
-    @Autowired
     public ExchangeRateController(ExchangeRateService exchangeRateService) {
         this.exchangeRateService = exchangeRateService;
     }
 
-    @GetMapping("/test-exchange/")
-    public Map<String, BigDecimal> ExchangeRatesUSD(@PathVariable String baseCurrency) {
-        logger.info("Fetching exchange rates for base currency {}.", baseCurrency);
-        logger.info("Exchange rates: " + exchangeRateService.getExchangeRates(baseCurrency));
-        return exchangeRateService.getExchangeRates(baseCurrency);
+    // New endpoint to fetch and cache exchange rates for USD
+    @GetMapping("/cache-exchange-rates")
+    public void cacheExchangeRatesForUSD() {
+        exchangeRateService.getExchangeRatesCache("USD");
     }
 
-    @GetMapping("/test-exchange/{baseCurrency}")
-    public Map<String, BigDecimal> ExchangeRatesCurrency(@PathVariable String baseCurrency) {
+    @GetMapping("/test-exchange/")
+    public Map<String, BigDecimal> ExchangeRatesUSD(@PathVariable String baseCurrency) {
         logger.info("Fetching exchange rates for base currency {}.", baseCurrency);
         logger.info("Exchange rates: " + exchangeRateService.getExchangeRates(baseCurrency));
         return exchangeRateService.getExchangeRates(baseCurrency);

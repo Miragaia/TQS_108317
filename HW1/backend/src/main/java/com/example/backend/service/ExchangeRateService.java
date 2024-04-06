@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -39,7 +40,14 @@ public class ExchangeRateService {
         }
         return null;
     }
+
     
+    @Cacheable(value = "exchangeRates")
+    public Map<String, BigDecimal> getExchangeRatesCache(String baseCurrency) {
+        logger.info("Fetching exchange rates cache for base currency {}.", baseCurrency);
+        logger.info("Exchange rates: " + getExchangeRates(baseCurrency));
+        return getExchangeRates(baseCurrency);
+    }
 }
 
 
