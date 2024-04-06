@@ -22,20 +22,12 @@ public class CacheConfig implements CachingConfigurer {
         return Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES);
     }
 
-    @Bean
+    @Bean("exchangeRates")
     @Primary
     public CacheManager cacheManager(Caffeine<Object, Object> caffeine) {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        caffeineCacheManager.setCacheNames(Collections.singleton("exchangeRates"));
         caffeineCacheManager.setCaffeine(caffeine);
         return caffeineCacheManager;
-    }
-
-
-    @Bean("exchangeRates")
-    public CacheManager exchangeRatesCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCacheNames(Collections.singleton("exchangeRates"));
-        cacheManager.setCaffeine(caffeineConfig());
-        return cacheManager;
     }
 }

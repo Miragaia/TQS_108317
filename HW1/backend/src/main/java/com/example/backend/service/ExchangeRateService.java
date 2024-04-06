@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -45,8 +46,23 @@ public class ExchangeRateService {
     @Cacheable(value = "exchangeRates")
     public Map<String, BigDecimal> getExchangeRatesCache(String baseCurrency) {
         logger.info("Fetching exchange rates cache for base currency {}.", baseCurrency);
-        logger.info("Exchange rates: " + getExchangeRates(baseCurrency));
-        return getExchangeRates(baseCurrency);
+        String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_3ucCp3INikY7NxAxE8vKtPK5JqgE5DE01Se0D7hL";
+        try {
+            ResponseEntity<Map> responseEntity = restTemplate.getForEntity(apiUrl, Map.class);
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                Map<String, BigDecimal> rates = (Map<String, BigDecimal>) responseEntity.getBody().get("data");
+                logger.info("Fetched cache exchange rates: {}", rates);
+                return rates;
+            } else {
+                logger.error("Failed to fetch cache exchange rates. Status code: {}", responseEntity.getStatusCode());
+                // Throw a custom exception here if needed
+                return Collections.emptyMap(); // Return an empty map instead of null
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred while fetching cache exchange rates", e);
+            // Throw a custom exception here if needed
+            return Collections.emptyMap(); // Return an empty map instead of null
+        }
     }
 }
 
