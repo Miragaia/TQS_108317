@@ -100,9 +100,53 @@ document.getElementById("searchButton").addEventListener("click", function(event
 
 
 
+// document.getElementById('exchangeForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     var baseCurrency = document.getElementById('baseCurrency').value;
+//     fetch('http://localhost:8080/test-exchange/' + baseCurrency)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to fetch exchange rates');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             var exchangeRatesDiv = document.getElementById('exchangeRates');
+//             exchangeRatesDiv.innerHTML = '';
+//             var ratesList = document.createElement('ul');
+//             Object.keys(data).forEach(currency => {
+//                 var rateItem = document.createElement('li');
+//                 rateItem.textContent = currency + ': ' + data[currency];
+//                 ratesList.appendChild(rateItem);
+//             });
+//             exchangeRatesDiv.appendChild(ratesList);
+//         })
+//         .catch(error => {
+//             console.error('Error fetching exchange rates:', error);
+//         });
+// });
 
-
-
+function fetchExchangeRates() {
+    const baseCurrency = document.getElementById('baseCurrency').value;
+    fetch(`http://localhost:8080/test-exchange/${baseCurrency}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Process the received exchange rates data and display it
+            const exchangeRatesDiv = document.getElementById('exchangeRates');
+            exchangeRatesDiv.innerHTML = `<h2>Exchange Rates for ${baseCurrency}</h2>`;
+            for (const [currency, rate] of Object.entries(data)) {
+                exchangeRatesDiv.innerHTML += `<p>${currency}: ${rate}</p>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching exchange rates:', error);
+        });
+}
 
 // Function to display bus connections in a table
 function displayBusConnections(busConnections) {

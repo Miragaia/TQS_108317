@@ -23,13 +23,6 @@ public class ExchangeRateService {
         this.restTemplate = restTemplate;
     }
 
-    // public Map<String, BigDecimal> getExchangeRates(String baseCurrency) {
-    //     String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_3ucCp3INikY7NxAxE8vKtPK5JqgE5DE01Se0D7hL";
-    //     ResponseEntity<Map> responseEntity = restTemplate.getForEntity(apiUrl, Map.class);
-    //     Map<String, BigDecimal> rates = (Map<String, BigDecimal>) responseEntity.getBody().get("rates");
-    //     return rates;
-    // }
-
     public Map<String, BigDecimal> getExchangeRates(String baseCurrency) {
         String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_3ucCp3INikY7NxAxE8vKtPK5JqgE5DE01Se0D7hL";
         try {
@@ -39,14 +32,12 @@ public class ExchangeRateService {
                 logger.info("Fetched exchange rates: {}", rates);
                 return rates;
             } else {
-                // Log error or handle non-successful response
                 logger.error("Failed to fetch exchange rates. Status code: {}", responseEntity.getStatusCode());
             }
         } catch (Exception e) {
-            // Log error or handle exception
             logger.error("Error occurred while fetching exchange rates", e);
         }
-        return null; // Return null if there's an error
+        return null;
     }
     
 }

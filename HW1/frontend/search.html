@@ -29,6 +29,16 @@
             
             <button id="searchButton" type="button">Search</button>
         </form>
+        <label for="baseCurrency">Select Base Currency:</label>
+        <select id="baseCurrency">
+            <option value="USD">USD - United States Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound Sterling</option>
+            <!-- Add more options for other currencies as needed -->
+        </select>
+        <button onclick="fetchExchangeRates()">Get Exchange Rates</button>
+
+        <div id="exchangeRates"></div>
         <table id="busConnectionTable">
             <thead>
                 <tr>

@@ -25,8 +25,15 @@ public class ExchangeRateController {
         this.exchangeRateService = exchangeRateService;
     }
 
+    @GetMapping("/test-exchange/")
+    public Map<String, BigDecimal> ExchangeRatesUSD(@PathVariable String baseCurrency) {
+        logger.info("Fetching exchange rates for base currency {}.", baseCurrency);
+        logger.info("Exchange rates: " + exchangeRateService.getExchangeRates(baseCurrency));
+        return exchangeRateService.getExchangeRates(baseCurrency);
+    }
+
     @GetMapping("/test-exchange/{baseCurrency}")
-    public Map<String, BigDecimal> testExchangeRates(@PathVariable String baseCurrency) {
+    public Map<String, BigDecimal> ExchangeRatesCurrency(@PathVariable String baseCurrency) {
         logger.info("Fetching exchange rates for base currency {}.", baseCurrency);
         logger.info("Exchange rates: " + exchangeRateService.getExchangeRates(baseCurrency));
         return exchangeRateService.getExchangeRates(baseCurrency);
