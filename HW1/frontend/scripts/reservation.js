@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(reservationData);
 
         // Send POST request to create reservation
-        fetch(`http://localhost:8080/api/reservations/create/${tripId}`, {      //this is only allowing to create reservation for one person because we are creating reservations with tripId, not resId
+        fetch(`http://localhost:8080/api/reservations/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -9,8 +9,13 @@ import com.example.backend.repository.ReservationRepository;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Service
 public class ReservationService {
+
+    private static final Logger logger = LogManager.getLogger(ReservationService.class);
     
     @Autowired
     private ReservationRepository reservationRepository;
@@ -24,7 +29,10 @@ public class ReservationService {
     }
 
     public Reservation saveReservation(Reservation reservation) {
-        return reservationRepository.save(reservation);
+        Reservation savedReservation = reservationRepository.save(reservation);
+        Long reservationId = savedReservation.getResId();
+        logger.info("Reservation with id " + reservationId + " saved");
+        return savedReservation;
     }
 
 

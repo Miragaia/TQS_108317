@@ -25,7 +25,7 @@ public class CacheController {
     private final CacheService cacheService;
     private final ApplicationContext context;
 
-    private static final Logger logger = LogManager.getLogger(ExchangeRateController.class);
+    private static final Logger logger = LogManager.getLogger(CacheController.class);
 
     @Autowired
     public CacheController(CacheService cacheService, ApplicationContext context) {

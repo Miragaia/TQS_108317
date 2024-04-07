@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
-    private static final Logger logger = LogManager.getLogger(BusConnectionController.class);
+    private static final Logger logger = LogManager.getLogger(ReservationController.class);
     
     @Autowired
     private ReservationService reservationService;
@@ -30,16 +30,8 @@ public class ReservationController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/create/{id}")
-    public ResponseEntity<Reservation> createReservationById(@PathVariable Long id, @RequestBody Reservation reservation) {
-        // Check if the provided id matches the id in the reservation object
-        logger.info("id in path: " + id);
-        // Check if a reservation with the provided ID exists
-        Optional<Reservation> existingReservation = reservationService.getReservationById(id);
-        if (existingReservation.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        
+    @PostMapping("/create")
+    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         // Save the reservation
         logger.info("Saving reservation");
         Reservation savedReservation = reservationService.saveReservation(reservation);
