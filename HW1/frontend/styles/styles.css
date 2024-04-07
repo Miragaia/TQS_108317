@@ -153,6 +153,32 @@ button {
     border-radius: 5px;
 }
 
+#targetCurrency,
+.CurSelect {
+  /* Styles for the select element */
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px; /* Adjust width as needed */
+}
+
+/* Style for the label */
+label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  margin-right: 10px;
+}
+
+.container {
+    /* Create a container to hold the label and select */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start of the flex container */
+    padding: 20px; /* Add padding for spacing */
+  }
+
 /* Styles for reservation.html */
 
 #tripDetails {
