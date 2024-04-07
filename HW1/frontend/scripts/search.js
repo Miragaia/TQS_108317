@@ -130,20 +130,17 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
             const exchangeRate = data;
             console.log('Exchange rate:', exchangeRate);
             console.log('Base price:', basePrice);
-            console.log('Current target currency:', currentTargetCurrency);
+            console.log('Pre change currency:', currentTargetCurrency);
             console.log('Target currency:', targetCurrency);
             console.log('Base currency:', baseCurrency);
             if (currentTargetCurrency !== targetCurrency) {
                 basePrice *= exchangeRate; // Update the base price based on the previous target currency
                 currentTargetCurrency = targetCurrency; // Update the current target currency
             }
-            
-            // Calculate the price in the target currency using the updated base price
-            const price = basePrice / exchangeRate;
 
             // Display the calculated price
             const priceDiv = document.getElementById('price');
-            priceDiv.innerHTML = `<p>Price in ${targetCurrency}: ${price}</p>`;
+            priceDiv.innerHTML = `<p>Price in ${targetCurrency}: ${basePrice}</p>`;
         })
         .catch(error => {       
             console.error('Error fetching exchange rates:', error);
