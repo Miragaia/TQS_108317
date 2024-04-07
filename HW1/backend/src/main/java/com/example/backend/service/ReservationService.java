@@ -27,6 +27,8 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+
+    //extra points (talvez usar, depois de pesquisar por id, fazer delete por id)
     public void deleteReservation(Long resId) {
         Optional<Reservation> reservation = reservationRepository.findById(resId);
         if (reservation.isPresent()) {

@@ -44,4 +44,39 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
+    // Add event listener for form submission
+    const reservationForm = document.getElementById('reservationForm');
+    reservationForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Collect form data
+        const formData = new FormData(reservationForm);
+        const reservationData = Object.fromEntries(formData.entries());
+        console.log(reservationData);
+
+        // Send POST request to create reservation
+        fetch(`http://localhost:8080/api/reservations/create/${tripId}`, {      //this is only allowing to create reservation for one person because we are creating reservations with tripId, not resId
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reservationData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to create reservation');
+            }
+            return response.json();
+        })
+        .then(createdReservation => {
+            // Handle success
+            console.log('Reservation created:', createdReservation);
+            alert('Reservation created successfully!');
+        })
+        .catch(error => {
+            // Handle error
+            console.error('Error creating reservation:', error);
+            alert('Failed to create reservation. Please try again.');
+        });
+    });
 });

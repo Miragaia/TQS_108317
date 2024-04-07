@@ -68,10 +68,25 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
 
             //display updated bus connections
             displayBusConnections(busConnections);
+
+            // Reattach event listeners for "Select Trip" buttons
+            attachEventListeners();
         })
         .catch(error => {       
             console.error('Error fetching exchange rates:', error);
         });
+}
+
+// Function to attach event listeners to "Select Trip" buttons
+function attachEventListeners() {
+    const selectTripButtons = document.querySelectorAll(".selectTripButton");
+    selectTripButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const tripId = button.dataset.tripId;
+            // Redirect to reservation page with selected trip ID as query parameter
+            window.location.href = `reservation.html?tripId=${tripId}`;
+        });
+    });
 }
 
 
