@@ -15,6 +15,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resId;
     
+    private Integer busConId;
     private String passengerName;
     private String address;
     private String city;
@@ -28,7 +29,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(String passengerName, String address, String city, String country, String zipCode, String creditCardNumber, String cardHolderName, String cardExpirationMonth, String cardExpirationYear) {
+    public Reservation(Integer busConId , String passengerName, String address, String city, String country, String zipCode, String creditCardNumber, String cardHolderName, String cardExpirationMonth, String cardExpirationYear) {
         this.passengerName = passengerName;
         this.address = address;
         this.city = city;
@@ -38,6 +39,7 @@ public class Reservation {
         this.cardHolderName = cardHolderName;
         this.cardExpirationMonth = cardExpirationMonth;
         this.cardExpirationYear = cardExpirationYear;
+        this.busConId = busConId;
     }
 
     public Long getId() {
@@ -46,6 +48,14 @@ public class Reservation {
 
     public void setId(Long resId) {
         this.resId = resId;
+    }
+
+    public Integer getBusConId() {
+        return busConId;
+    }
+
+    public void setBusConId(Integer busConId) {
+        this.busConId = busConId;
     }
 
     public String getPassengerName() {
@@ -124,6 +134,7 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id=" + resId +
+                ", busConId=" + busConId +
                 ", passengerName='" + passengerName + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +

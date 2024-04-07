@@ -6,4 +6,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Display reservation ID on the page
     const reservationIdContainer = document.getElementById('reservationId');
     reservationIdContainer.textContent = `You have booked a trip with reservation ID: ${reservationId}`;
+
+    const backButton = document.getElementById("backButton");
+    backButton.addEventListener("click", function() {
+        window.location.href = "search.html";
+    });
 });
