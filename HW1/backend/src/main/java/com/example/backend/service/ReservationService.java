@@ -35,6 +35,10 @@ public class ReservationService {
         return savedReservation;
     }
 
+    public List<Reservation> getReservationsByBusConId(Long busConId) {
+        return reservationRepository.findByBusConId(busConId);
+    }   
+
 
     //extra points (talvez usar, depois de pesquisar por id, fazer delete por id)
     public void deleteReservation(Long resId) {

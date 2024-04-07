@@ -19,7 +19,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Sample bus connections
         List<BusConnection> connections = Arrays.asList(
-            new BusConnection("Viseu", "Aveiro", "2024-04-12", "2024-04-12", "09:00:00", "18:00:00", 120.00, 50), // Example totalSeats value
+            new BusConnection("Viseu", "Aveiro", "2024-04-12", "2024-04-12", "09:00:00", "18:00:00", 120.00, 1), // Example totalSeats value
             new BusConnection("Viseu", "Aveiro", "2024-04-12", "2024-04-12", "06:30:00", "15:30:00", 110.00, 50),
             new BusConnection("Viseu", "Aveiro", "2024-04-11", "2024-04-12", "10:30:00", "19:30:00", 125.00, 50),
             new BusConnection("Viseu", "Aveiro", "2024-04-12", "2024-04-12", "13:00:00", "22:00:00", 130.00, 50),

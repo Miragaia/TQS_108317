@@ -44,21 +44,49 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
-    // Add event listener for form submission
-    const reservationForm = document.getElementById('reservationForm');
-    reservationForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
+    function fetchReservationsByBusConId(busConId, reservationData) {
+        // Make a request to your backend server to fetch reservations by bus connection ID
+        // Replace 'your_backend_url' with the actual URL of your backend endpoint
+        fetch(`http://localhost:8080/api/reservations/bus-connections/${busConId}/reservations`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch reservations');
+                }
+                return response.json();
+            })
+            .then(reservations => {
+                console.log('Reservations:', reservations);
+                const totalReservations = reservations.length;
+                console.log('Total reservations:', totalReservations);
+                
+                fetch(`http://localhost:8080/api/bus-connections/${busConId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch bus connection details');
+                    }
+                    return response.json();
+                })
+                .then(busConnection => {
+                    const totalSeats = busConnection.totalSeats;
+                    // Compare total reservations with total seats
+                    if (totalReservations < totalSeats) {
+                        // Proceed with creating a new reservation
+                        createReservation(reservationData);
+                    } else {
+                        // Display a message indicating that no more reservations can be made
+                        alert('No more reservations can be made for this trip. Please select another trip.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching bus connection details:', error);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching reservations:', error);
+            });
+    }
 
-        const busConId = tripId;
-
-        // Collect form data
-        const formData = new FormData(reservationForm);
-        const reservationData = Object.fromEntries(formData.entries());
-
-        reservationData.busConId = busConId;
-        
-        console.log(reservationData);
-
+    function createReservation(reservationData) {
         // Send POST request to create reservation
         fetch(`http://localhost:8080/api/reservations/create`, {
             method: 'POST',
@@ -85,5 +113,27 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('Error creating reservation:', error);
             alert('Failed to create reservation. Please try again.');
         });
+    }
+
+
+    // Add event listener for form submission
+    const reservationForm = document.getElementById('reservationForm');
+    reservationForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const busConId = tripId;
+
+        // Collect form data
+        const formData = new FormData(reservationForm);
+        const reservationData = Object.fromEntries(formData.entries());
+
+        reservationData.busConId = busConId;
+        
+        console.log(reservationData);
+
+        // Fetch reservations associated with the tripId
+        fetchReservationsByBusConId(tripId , reservationData);
+
+        
     });
 });
