@@ -13,6 +13,7 @@ function populateCityOptions() {
         originSelect.add(originOption);
     });
 
+    resetCurrency();
     populateDestinationOptions();
 }
 
@@ -71,27 +72,33 @@ document.getElementById("searchButton").addEventListener("click", function(event
     const departureDate = document.getElementById("departureDate").value;
 
     if (origin && destination && destination !== "Select destination") {
-        // Make a GET request to the backend API to search for bus connections
-        fetch(`http://localhost:8080/api/bus-connections/${origin}/${destination}/${departureDate}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.length > 0) {
-                    localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
-                    // Redirect to trips.html
-                    window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
-                } else {
-                    console.log("No bus connections found.");
-                    alert("No bus connections found for the selected criteria.");
-                }
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+        console.log("departureDate", !departureDate)
+        if (departureDate) {
+            // Make a GET request to the backend API to search for bus connections
+            fetch(`http://localhost:8080/api/bus-connections/${origin}/${destination}/${departureDate}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.length > 0) {
+                        localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
+                        // Redirect to trips.html
+                        window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
+                    } else {
+                        console.log("No bus connections found.");
+                        alert("No bus connections found for the selected criteria.");
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+        else {
+            alert("Please select a departure date.");
+        }
     } else {
         alert("Please select both departure and destination cities.");
     }
@@ -102,6 +109,11 @@ let basePrice = 50; // Example base price in USD
 
 // Define a global variable to store the current target currency
 let currentTargetCurrency = 'USD'; // Default target currency
+
+function resetCurrency() {
+    const targetCurrencySelect = document.getElementById('targetCurrency');
+    targetCurrencySelect.value = 'USD';
+}
 
 // Function to fetch exchange rates
 function fetchExchangeRates(baseCurrency, targetCurrency) {
@@ -116,6 +128,11 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
         .then(data => {
             // If the target currency changes, update the current target currency
             const exchangeRate = data;
+            console.log('Exchange rate:', exchangeRate);
+            console.log('Base price:', basePrice);
+            console.log('Current target currency:', currentTargetCurrency);
+            console.log('Target currency:', targetCurrency);
+            console.log('Base currency:', baseCurrency);
             if (currentTargetCurrency !== targetCurrency) {
                 basePrice *= exchangeRate; // Update the base price based on the previous target currency
                 currentTargetCurrency = targetCurrency; // Update the current target currency
@@ -128,24 +145,29 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
             const priceDiv = document.getElementById('price');
             priceDiv.innerHTML = `<p>Price in ${targetCurrency}: ${price}</p>`;
         })
-        .catch(error => {
+        .catch(error => {       
             console.error('Error fetching exchange rates:', error);
         });
 }
 
 // Initialize base currency as USD
-let baseCurrency = 'USD';
+let baseCurrency = 'USD1';
 let targetCurrency = '';
 
 // Event listener for base currency selection
-const baseCurrencySelect = document.getElementById('baseCurrency');
+const targetCurrencySelect = document.getElementById('targetCurrency');
 
-baseCurrencySelect.addEventListener('change', function() {
-    // Store the previously selected base currency as target currency
-    targetCurrency = baseCurrency;
+targetCurrencySelect.addEventListener('change', function() {
+
+    if (baseCurrency === 'USD1') {
+        baseCurrency = 'USD';
+    }
+    else {
+        baseCurrency = targetCurrency;
+    }
 
     // Update the base currency with the newly selected value
-    baseCurrency = baseCurrencySelect.value;
+    targetCurrency = targetCurrencySelect.value;
 
     // Fetch exchange rates with the new base and target currencies
     fetchExchangeRates(baseCurrency, targetCurrency);
