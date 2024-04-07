@@ -49,9 +49,14 @@ document.addEventListener("DOMContentLoaded", function() {
     reservationForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
 
+        const busConId = tripId;
+
         // Collect form data
         const formData = new FormData(reservationForm);
         const reservationData = Object.fromEntries(formData.entries());
+
+        reservationData.busConId = busConId;
+        
         console.log(reservationData);
 
         // Send POST request to create reservation

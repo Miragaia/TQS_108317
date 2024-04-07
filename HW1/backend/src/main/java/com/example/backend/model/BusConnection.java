@@ -22,45 +22,21 @@ public class BusConnection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long conId;
     
-    // @NotBlank(message = "Origin is required")
     private String origin;
     
-    // @NotBlank(message = "Destination is required")
     private String destination;
-
-    // @NotBlank(message = "Departure date is required")
     private String departureDate;
 
-    // @NotBlank(message = "Arrival date is required")
     private String arrivalDate;
     
-    // @NotBlank(message = "Departure time is required")
     private String departureTime;
     
-    // @NotBlank(message = "Arrival time is required")     //talvez tirar e arrival date tambem, preco tambem
     private String arrivalTime;
 
     private int totalSeats;
     
-    // @NotNull(message = "Price is required")
     private double price;
 
-    // @OneToMany(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "bus_connection_id")
-    // private List<Seat> seats;
-
-
-    // public BusConnection(String origin, String destination, String departureDate, String arrivalDate, String departureTime, String arrivalTime, double price, List<Seat> seats, int totalSeats) {
-    //     this.origin = origin;
-    //     this.destination = destination;
-    //     this.departureDate = departureDate;
-    //     this.arrivalDate = arrivalDate;
-    //     this.departureTime = departureTime;
-    //     this.arrivalTime = arrivalTime;
-    //     this.price = price;
-    //     this.seats = seats;
-    //     this.totalSeats = totalSeats;
-    // }
 
     public BusConnection(String origin, String destination, String departureDate, String arrivalDate, String departureTime, String arrivalTime, double price, int totalSeats) {
         this.origin = origin;
