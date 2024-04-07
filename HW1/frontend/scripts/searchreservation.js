@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     searchForm.addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission
-
+        const searchResultBus = document.getElementById("searchResultBus");
+        searchResultBus.innerHTML = "";
         const reservationId = document.getElementById("reservationId").value;
 
         // Send GET request to fetch reservation details
@@ -45,7 +46,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function displayErrorMessage(message) {
         const searchResult = document.getElementById("searchResult");
+        const searchResultBus = document.getElementById("searchResultBus");
         searchResult.innerHTML = `<p>${message}</p>`;
+        searchResultBus.innerHTML = "";
     }
 
     function fetchBusConnectionDetails(busConId) {
@@ -80,4 +83,9 @@ document.addEventListener("DOMContentLoaded", function() {
             <p><strong>Total Seats:</strong> ${busConnection.totalSeats}</p>
         `;
     }
+
+    const backButton = document.getElementById("backButton");
+    backButton.addEventListener("click", function() {
+        window.location.href = "search.html";
+    });
 });
