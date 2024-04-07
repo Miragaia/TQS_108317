@@ -71,7 +71,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(createdReservation => {
             // Handle success
             console.log('Reservation created:', createdReservation);
-            alert('Reservation created successfully!');
+            const reservationId = createdReservation.resId;
+            // Redirect to goodbye page with reservation ID
+            window.location.href = `goodbyepage.html?reservationId=${reservationId}`;
         })
         .catch(error => {
             // Handle error
