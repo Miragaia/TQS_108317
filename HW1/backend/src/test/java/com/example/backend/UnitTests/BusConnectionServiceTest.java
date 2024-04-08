@@ -1,6 +1,8 @@
 package com.example.backend.UnitTests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,71 +74,176 @@ public class BusConnectionServiceTest {
     @DisplayName("Test get all bus connections")
     public void testGetAllBusConnections() {
         List<BusConnection> busConnections = new ArrayList<>();
-        busConnections.add(new BusConnection());
-        busConnections.add(new BusConnection());
-        busConnections.add(new BusConnection());
-        
+        busConnections.add(busConnection1);
+        busConnections.add(busConnection2);
+        busConnections.add(busConnection3);
+
         when(busConnectionRepository.findAll()).thenReturn(busConnections);
-        
-        List<BusConnection> result = busConnectionService.getAllBusConnections();
-        
-        assert(result.size() == 3);
+        assertThat(busConnectionService.getAllBusConnections()).isEqualTo(busConnections);
     }
+        
     
     @Test
     @DisplayName("Test get bus connection by id")
     public void testGetBusConnectionById() {
-        BusConnection busConnection = new BusConnection();
-        busConnection.setConId(1L);
-        
-        when(busConnectionRepository.findById(1L)).thenReturn(Optional.of(busConnection));
-        
-        BusConnection result = busConnectionService.getBusConnectionById(1L);
-        
-        assert(result.getConId() == 1L);
+        when(busConnectionRepository.findById(1L)).thenReturn(Optional.of(busConnection1));
+        assertThat(busConnectionService.getBusConnectionById(1L)).isEqualTo(busConnection1);
     }
     
     @Test
     @DisplayName("Test get bus connections by origin, destination and departure date")
     public void testGetBusConnectionsByOriginAndDestinationAndDepartureDate() {
         List<BusConnection> busConnections = new ArrayList<>();
-        busConnections.add(new BusConnection());
-        busConnections.add(new BusConnection());
-        busConnections.add(new BusConnection());
-        
-        when(busConnectionRepository.findByOriginAndDestinationAndDepartureDate("origin", "destination", "departureDate")).thenReturn(busConnections);
-        
-        List<BusConnection> result = busConnectionService.getBusConnectionsByOriginAndDestinationAndDepartureDate("origin", "destination", "departureDate");
-        
-        assert(result.size() == 3);
+        busConnections.add(busConnection1);
+        busConnections.add(busConnection2);
+
+        when(busConnectionRepository.findByOriginAndDestinationAndDepartureDate("Viseu", "Aveiro", "2024-04-27")).thenReturn(busConnections);
+        assertThat(busConnectionService.getBusConnectionsByOriginAndDestinationAndDepartureDate("Viseu", "Aveiro", "2024-04-27")).isEqualTo(busConnections);
     }
     
     @Test
     @DisplayName("Test save bus connection")
     public void testSaveAllBusConnections() {
         List<BusConnection> busConnections = new ArrayList<>();
-        busConnections.add(new BusConnection());
-        busConnections.add(new BusConnection());
-        busConnections.add(new BusConnection());
-        
+        busConnections.add(busConnection1);
+        busConnections.add(busConnection2);
+
         when(busConnectionRepository.saveAll(busConnections)).thenReturn(busConnections);
-        
-        List<BusConnection> result = busConnectionService.saveAllBusConnections(busConnections);
-        
-        assert(result.size() == 3);
+        assertThat(busConnectionService.saveAllBusConnections(busConnections)).isEqualTo(busConnections);
     }
 
 
     @Test
     @DisplayName("Test add bus connection")
     public void testAddBusConnection() {
-        BusConnection busConnection = new BusConnection();
-        busConnection.setConId(1L);
-        
-        when(busConnectionRepository.save(busConnection)).thenReturn(busConnection);
-        
-        BusConnection result = busConnectionService.addBusConnection(busConnection);
-        
-        assert(result.getConId() == 1L);
+        when(busConnectionRepository.save(busConnection1)).thenReturn(busConnection1);
+        assertThat(busConnectionService.addBusConnection(busConnection1)).isEqualTo(busConnection1);
     }
+
+    @Test
+    @DisplayName("Test update bus connection")
+    public void testUpdateBusConnection() {
+        BusConnection updatedBusConnection = new BusConnection();
+        updatedBusConnection.setConId(1L);
+        updatedBusConnection.setOrigin("Viseu");
+        updatedBusConnection.setDestination("Aveiro");
+        updatedBusConnection.setDepartureDate("2024-04-27");
+        updatedBusConnection.setDepartureTime("13:00:00");
+        updatedBusConnection.setArrivalDate("2024-04-27");
+        updatedBusConnection.setArrivalTime("14:30:00");
+        updatedBusConnection.setPrice(25);
+        updatedBusConnection.setTotalSeats(20);
+
+        when(busConnectionRepository.findById(1L)).thenReturn(Optional.of(busConnection1));
+        when(busConnectionRepository.save(busConnection1)).thenReturn(updatedBusConnection);
+        assertThat(busConnectionService.updateBusConnection(1L, busConnection1)).isEqualTo(updatedBusConnection);
+    }
+
+    @Test
+    @DisplayName("Test delete bus connection")
+    public void testDeleteBusConnection() {
+        when(busConnectionRepository.findById(1L)).thenReturn(Optional.of(busConnection1));
+        doNothing().when(busConnectionRepository).deleteById(1L);
+        
+        busConnectionService.deleteBusConnection(1L);
+        
+        verify(busConnectionRepository, times(1)).findById(1L);
+        verify(busConnectionRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Test delete bus connection with invalid id")
+    public void testDeleteBusConnectionInvalidId() {
+        when(busConnectionRepository.findById(1L)).thenReturn(Optional.ofNullable(null));
+        
+        busConnectionService.deleteBusConnection(1L);
+        
+        verify(busConnectionRepository, times(1)).findById(1L);
+        verify(busConnectionRepository, never()).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Test get bus connection by departure date")
+    public void testGetBusConnectionByDepartureDate() {
+        List<BusConnection> busConnections = new ArrayList<>();
+        busConnections.add(busConnection1);
+        busConnections.add(busConnection3);
+
+        when(busConnectionRepository.findByDepartureDate("2024-04-27")).thenReturn(busConnections);
+        assertThat(busConnectionService.getBusConnectionsByDepartureDate("2024-04-27")).isEqualTo(busConnections);
+    }
+
+    @Test
+    @DisplayName("Test get bus connection by origin")
+    public void testGetBusConnectionByOrigin() {
+        List<BusConnection> busConnections = new ArrayList<>();
+        busConnections.add(busConnection1);
+        busConnections.add(busConnection3);
+
+        when(busConnectionRepository.findByOrigin("Viseu")).thenReturn(busConnections);
+        assertThat(busConnectionService.getBusConnectionsByOrigin("Viseu")).isEqualTo(busConnections);
+    }
+
+    @Test
+    @DisplayName("Test get bus connection by destination")
+    public void testGetBusConnectionByDestination() {
+        List<BusConnection> busConnections = new ArrayList<>();
+        busConnections.add(busConnection1);
+        busConnections.add(busConnection2);
+
+        when(busConnectionRepository.findByDestination("Aveiro")).thenReturn(busConnections);
+        assertThat(busConnectionService.getBusConnectionsByDestination("Aveiro")).isEqualTo(busConnections);
+    }
+
+    @Test
+    @DisplayName("Test get bus connection by origin and destination")
+    public void testGetBusConnectionByOriginAndDestination() {
+        List<BusConnection> busConnections = new ArrayList<>();
+        busConnections.add(busConnection1);
+
+        when(busConnectionRepository.findByOriginAndDestination("Viseu", "Aveiro")).thenReturn(busConnections);
+        assertThat(busConnectionService.getBusConnectionsByOriginAndDestination("Viseu", "Aveiro")).isEqualTo(busConnections);
+    }
+
+    @Test
+    @DisplayName("Test get bus connection by origin and destination with invalid parameters")
+    public void testGetBusConnectionByOriginAndDestinationWithInvalidParameters() {
+        // Assume bus connections with origin "Viseu" and destination "Aveiro" do not exist in the repository
+        when(busConnectionRepository.findByOriginAndDestination("Viseu", "Aveiro")).thenReturn(new ArrayList<BusConnection>());
+
+        assertThat(busConnectionService.getBusConnectionsByOriginAndDestination("Viseu", "Aveiro")).isEqualTo(null);
+    }
+
+    @Test
+    @DisplayName("Test delete bus connection with invalid id")
+    public void testDeleteBusConnectionWithInvalidId() {
+        // Assume bus connection with ID 1 does not exist in the repository
+        when(busConnectionRepository.findById(1L)).thenReturn(Optional.ofNullable(null));
+
+        busConnectionService.deleteBusConnection(1L);
+
+        // Verify that findById method is invoked
+        verify(busConnectionRepository, times(1)).findById(1L);
+        // Verify that deleteById method is not invoked
+        verify(busConnectionRepository, never()).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Test get bus connection by id with invalid id")
+    public void testGetBusConnectionByIdWithInvalidId() {
+        // Assume bus connection with ID 1 does not exist in the repository
+        when(busConnectionRepository.findById(1L)).thenReturn(Optional.ofNullable(null));
+
+        assertThat(busConnectionService.getBusConnectionById(1L)).isEqualTo(null);
+    }
+
+    @Test
+    @DisplayName("Test get bus connections by origin, destination and departure date with invalid parameters")
+    public void testGetBusConnectionsByOriginAndDestinationAndDepartureDateWithInvalidParameters() {
+        // Assume bus connections with origin "Viseu", destination "Aveiro" and departure date "2024-04-27" do not exist in the repository
+        when(busConnectionRepository.findByOriginAndDestinationAndDepartureDate("Viseu", "Aveiro", "2024-04-27")).thenReturn(new ArrayList<BusConnection>());
+
+        assertThat(busConnectionService.getBusConnectionsByOriginAndDestinationAndDepartureDate("Viseu", "Aveiro", "2024-04-27")).isEqualTo(null);
+    }
+
 }
