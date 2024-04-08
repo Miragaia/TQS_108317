@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const searchForm = document.getElementById("searchForm");
 
     searchForm.addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         const searchResultBus = document.getElementById("searchResultBus");
         searchResultBus.innerHTML = "";
         const reservationId = document.getElementById("reservationId").value;
-
-        // Send GET request to fetch reservation details
+        
         fetch(`http://localhost:8080/api/reservations/${reservationId}`)
             .then(response => {
                 if (!response.ok) {

@@ -36,7 +36,6 @@ public class ReservationController {
 
     @PostMapping("/create")
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        // Save the reservation
         logger.info("Saving reservation");
         Reservation savedReservation = reservationService.saveReservation(reservation);
         return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
@@ -46,7 +45,6 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> getReservationsByBusConId(@PathVariable Long busConId) {
         List<Reservation> reservations = reservationService.getReservationsByBusConId(busConId);
         logger.info(reservations.size() + " reservations found for bus connection with id " + busConId);
-        logger.info("Reservations: " + reservations);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 

@@ -17,7 +17,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Sample bus connections
         List<BusConnection> connections = Arrays.asList(
             new BusConnection("Viseu", "Aveiro", "2024-04-12", "2024-04-12", "09:00:00", "18:00:00", 120.00, 1), // Example totalSeats value
             new BusConnection("Viseu", "Aveiro", "2024-04-12", "2024-04-12", "06:30:00", "15:30:00", 110.00, 50),
@@ -131,7 +130,6 @@ public class DataInitializer implements CommandLineRunner {
             new BusConnection("Porto", "Aveiro", "2024-05-12", "2024-05-12", "01:00:00", "12:00:00", 135.00, 50)
         );
 
-        // Save the bus connections
         busConnectionService.saveAllBusConnections(connections);
     }
 }

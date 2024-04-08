@@ -1,19 +1,11 @@
 package com.example.backend.model;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 @Entity
 @Table(name = "bus_connections")
 @Data
@@ -115,15 +107,6 @@ public class BusConnection {
     public void setPrice(double price) {
         this.price = price;
     }
-
-    //getters e setter dos seats
-    // public List<Seat> getSeats() {
-    //     return seats;
-    // }
-
-    // public void setSeats(List<Seat> seats) {
-    //     this.seats = seats;
-    // }
 
     public int getTotalSeats() {
         return totalSeats;

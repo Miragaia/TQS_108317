@@ -26,15 +26,12 @@ targetCurrencySelect.addEventListener('change', function() {
         baseCurrency = targetCurrency;
     }
 
-    // Update the base currency with the newly selected value
     targetCurrency = targetCurrencySelect.value;
 
-    // Fetch exchange rates with the new base and target currencies
     fetchExchangeRates(baseCurrency, targetCurrency);
 });
 
 
-// Function to fetch exchange rates
 function fetchExchangeRates(baseCurrency, targetCurrency) {
     const url = `http://localhost:8080/cache-exchange-rates/${baseCurrency}/${targetCurrency}`;
     fetch(url)
@@ -45,7 +42,6 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
             return response.json();
         })
         .then(data => {
-            // If the target currency changes, update the current target currency
             const exchangeRate = data;
             console.log('Bus connections:', busConnections);
             console.log('Exchange rate:', exchangeRate);
@@ -66,10 +62,8 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
                 connection.price = priceInTargetCurrency.toFixed(2);
             });
 
-            //display updated bus connections
             displayBusConnections(busConnections);
 
-            // Reattach event listeners for "Select Trip" buttons
             attachEventListeners();
         })
         .catch(error => {       
@@ -77,13 +71,12 @@ function fetchExchangeRates(baseCurrency, targetCurrency) {
         });
 }
 
-// Function to attach event listeners to "Select Trip" buttons
+
 function attachEventListeners() {
     const selectTripButtons = document.querySelectorAll(".selectTripButton");
     selectTripButtons.forEach(button => {
         button.addEventListener("click", function() {
             const tripId = button.dataset.tripId;
-            // Redirect to reservation page with selected trip ID as query parameter
             window.location.href = `reservation.html?tripId=${tripId}`;
         });
     });
@@ -95,28 +88,25 @@ document.addEventListener("DOMContentLoaded", function() {
     const origin = urlParams.get('origin');
     const destination = urlParams.get('destination');
     const departureDate = urlParams.get('departureDate');
-    const storedData = localStorage.getItem('busConnections'); // Retrieve data from localStorage
+    const storedData = localStorage.getItem('busConnections'); 
     const data = storedData ? JSON.parse(storedData) : [];
 
     
     displayBusConnections(data);
 
-    // Add event listener to handle button clicks
     const selectTripButtons = document.querySelectorAll(".selectTripButton");
     selectTripButtons.forEach(button => {
         button.addEventListener("click", function() {
             const tripId = button.dataset.tripId;
-            // Redirect to reservation page with selected trip ID as query parameter
             window.location.href = `reservation.html?tripId=${tripId}`;
         });
     });
 });
 
 
-// Function to display bus connections in the table
 function displayBusConnections(busConnections) {
     const tableBody = document.getElementById("tripTableBody");
-    tableBody.innerHTML = ""; // Clear existing rows
+    tableBody.innerHTML = "";
     
     busConnections.forEach(connection => {
         const row = document.createElement("tr");

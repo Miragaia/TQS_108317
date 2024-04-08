@@ -39,12 +39,11 @@ public class ReservationService {
         return reservationRepository.findByBusConId(busConId);
     }   
 
-
     //extra points (talvez usar, depois de pesquisar por id, fazer delete por id)
     public void deleteReservation(Long resId) {
         Optional<Reservation> reservation = reservationRepository.findById(resId);
         if (reservation.isPresent()) {
-            reservationRepository.delete(reservation.get());        //perceber se devo usar .get() ou usar mais tarde um delete por id  
+            reservationRepository.delete(reservation.get());
         }
     }
 }

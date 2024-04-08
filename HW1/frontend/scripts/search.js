@@ -1,8 +1,7 @@
-// JavaScript code for search.html
+
 const origincities = ["Viseu", "Aveiro", "Coimbra", "Lisboa", "Porto"];
 const destinationcities = ["Viseu", "Aveiro", "Coimbra", "Lisboa", "Porto"];
 
-// Populate select elements with city options
 function populateCityOptions() {
     const originSelect = document.getElementById("origin");
     const destinationSelect = document.getElementById("destination");
@@ -16,7 +15,6 @@ function populateCityOptions() {
     populateDestinationOptions();
 }
 
-// Populate destination select options based on selected origin city
 function populateDestinationOptions() {
     const originSelect = document.getElementById("origin");
     const destinationSelect = document.getElementById("destination");
@@ -24,10 +22,8 @@ function populateDestinationOptions() {
     const selectedOriginCity = originSelect.value;
     const filteredDestinationCities = destinationcities.filter(city => city !== selectedOriginCity);
 
-    // Clear destination dropdown before adding filtered options
     destinationSelect.innerHTML = "";
 
-    // Add default "Select destination" option
     const defaultOption = document.createElement("option");
     defaultOption.text = "Select destination";
     destinationSelect.add(defaultOption);
@@ -39,18 +35,16 @@ function populateDestinationOptions() {
     });
 }
 
-// Ensure origin and destination are different
 function validateCities() {
     const originSelect = document.getElementById("origin");
     const destinationSelect = document.getElementById("destination");
 
     if (originSelect.value === destinationSelect.value) {
         alert("Origin and destination cannot be the same.");
-        destinationSelect.value = ""; // Reset destination to empty
+        destinationSelect.value = "";
     }
 }
 
-// Event listener for select change
 document.getElementById("origin").addEventListener("change", function() {
     populateDestinationOptions();
     validateCities();
@@ -60,7 +54,6 @@ document.getElementById("destination").addEventListener("change", function() {
     validateCities();
 });
 
-// Call the populateCityOptions function when the page loads
 document.addEventListener("DOMContentLoaded", populateCityOptions);
 
 
@@ -73,7 +66,6 @@ document.getElementById("searchButton").addEventListener("click", function(event
     if (origin && destination && destination !== "Select destination") {
         console.log("departureDate", !departureDate)
         if (departureDate) {
-            // Make a GET request to the backend API to search for bus connections
             fetch(`http://localhost:8080/api/bus-connections/${origin}/${destination}/${departureDate}`)
                 .then(response => {
                     if (!response.ok) {
@@ -83,8 +75,7 @@ document.getElementById("searchButton").addEventListener("click", function(event
                 })
                 .then(data => {
                     if (data.length > 0) {
-                        localStorage.setItem('busConnections', JSON.stringify(data)); // Store data in localStorage
-                        // Redirect to trips.html
+                        localStorage.setItem('busConnections', JSON.stringify(data));
                         window.location.href = `trips.html?origin=${origin}&destination=${destination}&departureDate=${departureDate}`;
                     } else {
                         console.log("No bus connections found.");
@@ -103,11 +94,9 @@ document.getElementById("searchButton").addEventListener("click", function(event
     }
 });
 
-
-// Function to display bus connections in a table
 function displayBusConnections(busConnections) {
     const tableBody = document.getElementById("busConnectionTableBody");
-    tableBody.innerHTML = ""; // Clear existing rows
+    tableBody.innerHTML = "";
     
     busConnections.forEach(connection => {
         const row = document.createElement("tr");
@@ -125,7 +114,6 @@ function displayBusConnections(busConnections) {
     });
 }
 
-// Function to fetch bus connections from the backend
 function fetchBusConnections() {
     fetch('http://localhost:8080/api/bus-connections')
         .then(response => {
@@ -135,12 +123,11 @@ function fetchBusConnections() {
             return response.json();
         })
         .then(data => {
-            displayBusConnections(data); // Call the displayBusConnections function with the fetched data
+            displayBusConnections(data);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
 }
 
-// Call the fetchBusConnections function to fetch and display bus connections when the page loads
 document.addEventListener("DOMContentLoaded", fetchBusConnections);

@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+//will delete later, after testing cache
 
 
 @RestController
@@ -33,21 +34,6 @@ public class CacheController {
         this.context = context;
     }
 
-    // @GetMapping("/inspect-cache/{cacheName}")
-    // public Map<Object, Object> inspectCache(@PathVariable String cacheName) {
-    //     Map<Object, Object> cacheContents = cacheService.inspectCache(cacheName);
-    //     logger.info("Cache contents: {}", cacheContents);
-    //     if (!cacheContents.isEmpty()) {
-    //         System.out.println("Cache contents:");
-    //         for (Map.Entry<Object, Object> entry : cacheContents.entrySet()) {
-    //             System.out.println(entry.getKey() + " : " + entry.getValue());
-    //         }
-    //     } else {
-    //         System.out.println("Cache is empty.");
-    //     }
-    //     return cacheContents;
-    // }
-
     @GetMapping("/inspect-cache/{cacheName}")
     public Map<Object, Object> inspectCache(@PathVariable String cacheName) {
         Map<Object, Object> cacheContents = new HashMap<>();
@@ -56,36 +42,35 @@ public class CacheController {
         
         if (cache != null) {
             cacheContents = cacheService.inspectCache(cacheName);
-            System.out.println("Cache inspection completed for cache: " + cacheName);
+            logger.info("Cache inspection completed for cache: " + cacheName);
             if (!cacheContents.isEmpty()) {
                 System.out.println("Cache contents:");
                 for (Map.Entry<Object, Object> entry : cacheContents.entrySet()) {
-                    System.out.println(entry.getKey() + " : " + entry.getValue());
+                    logger.info(entry.getKey() + " : " + entry.getValue());
                 }
             } else {
-                System.out.println("Cache is empty.");
+                logger.info("Cache is empty.");
             }
         } else {
-            System.out.println("Cache with name '" + cacheName + "' does not exist.");
+            logger.info("Cache with name '" + cacheName + "' does not exist.");
         }
         
         return cacheContents;
     }
-
 
     @GetMapping("/inspect-cache-managers")
     public Map<String, Object> inspectCacheManagers() {
         Map<String, Object> result = new HashMap<>();
         CaffeineCacheManager primaryCacheManager = context.getBean(CaffeineCacheManager.class);
         result.put("PrimaryCacheManager", inspectCacheManager(primaryCacheManager));
-
+        logger.info("Cache managers inspection completed.");
         return result;
     }
 
     private Map<String, Object> inspectCacheManager(CaffeineCacheManager cacheManager) {
         Map<String, Object> cacheManagerInfo = new HashMap<>();
         cacheManagerInfo.put("CacheNames", cacheManager.getCacheNames());
-        // Add more information about the cache manager if needed
+        logger.info("Cache names: " + cacheManager.getCacheNames());
         return cacheManagerInfo;
     }
 }
