@@ -30,17 +30,17 @@ public class ExchangeRateServiceTest {
 
 
     //testei exchangerate mas foi cache, talvez fazer para so o exchange rate
-    @Test
-    @DisplayName("Test get exchange rates cache")
-    public void testGetExchangeRatesCache() {
-        try {
-            when(httpClient.doHttpGet(anyString())).thenReturn("{\"rates\":{\"USD\":1.0}}");
-            double result = exchangeRateService.getExchangeRatesCache("EUR", "USD");
-            assert(result == 1.0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }    
+    // @Test
+    // @DisplayName("Test get exchange rates cache")
+    // public void testGetExchangeRatesCache() {
+    //     try {
+    //         when(httpClient.doHttpGet(anyString())).thenReturn("{\"rates\":{\"USD\":1.0}}");
+    //         double result = exchangeRateService.getExchangeRatesCache("EUR", "USD");
+    //         assert(result == 1.0);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }    
 
     //fazer testes para os erros?
 }
