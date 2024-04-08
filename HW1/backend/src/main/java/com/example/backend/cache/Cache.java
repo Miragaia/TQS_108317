@@ -70,6 +70,7 @@ public class Cache {
         cacheMap.clear();
     }
 
+    //error but working
     public void cacheTimer(String key, int timeToLive){
         logger.info("Deleting item from cache in {}ms", timeToLive);
         new java.util.Timer().schedule(

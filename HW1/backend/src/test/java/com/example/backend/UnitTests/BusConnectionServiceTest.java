@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,46 @@ public class BusConnectionServiceTest {
 
     @InjectMocks
     private BusConnectionService busConnectionService;
+
+    private BusConnection busConnection1;
+    private BusConnection busConnection2;
+    private BusConnection busConnection3;
+
+    @BeforeEach
+    void setUp() {
+        busConnection1 = new BusConnection();
+        busConnection1.setConId(1L);
+        busConnection1.setOrigin("Viseu");
+        busConnection1.setDestination("Aveiro");
+        busConnection1.setDepartureDate("2024-04-27");
+        busConnection1.setDepartureTime("13:00:00");
+        busConnection1.setArrivalDate("2024-04-27");
+        busConnection1.setArrivalTime("14:30:00");
+        busConnection1.setPrice(20);
+        busConnection1.setTotalSeats(20);
+
+        busConnection2 = new BusConnection();
+        busConnection2.setConId(2L);
+        busConnection2.setOrigin("Aveiro");
+        busConnection2.setDestination("Viseu");
+        busConnection2.setDepartureDate("2024-04-28");
+        busConnection2.setDepartureTime("15:00:00");
+        busConnection2.setArrivalDate("2024-04-28");
+        busConnection2.setArrivalTime("15:30:00");
+        busConnection2.setPrice(30);
+        busConnection2.setTotalSeats(2);
+
+        busConnection3 = new BusConnection();
+        busConnection3.setConId(3L);
+        busConnection3.setOrigin("Viseu");
+        busConnection3.setDestination("Coimbra");
+        busConnection3.setDepartureDate("2024-04-30");
+        busConnection3.setDepartureTime("11:00:00");
+        busConnection3.setArrivalDate("2024-04-30");
+        busConnection3.setArrivalTime("11:30:00");
+        busConnection3.setPrice(35);
+        busConnection3.setTotalSeats(3);
+    }
 
     
     @Test
@@ -86,5 +127,16 @@ public class BusConnectionServiceTest {
     }
 
 
-    //fazer testes para os erros?
+    @Test
+    @DisplayName("Test add bus connection")
+    public void testAddBusConnection() {
+        BusConnection busConnection = new BusConnection();
+        busConnection.setConId(1L);
+        
+        when(busConnectionRepository.save(busConnection)).thenReturn(busConnection);
+        
+        BusConnection result = busConnectionService.addBusConnection(busConnection);
+        
+        assert(result.getConId() == 1L);
+    }
 }
