@@ -74,7 +74,6 @@ public class ReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
-    //new endpoint
     @GetMapping("/all")
     public ResponseEntity<List<Reservation>> getAllReservations() {
         List<Reservation> reservations = reservationService.getAllReservations();
@@ -94,11 +93,7 @@ public class ReservationController {
         }
         reservationService.deleteReservation(id);
         logger.info("Reservation with id " + id + " deleted");
-        if (reservationService.getReservationById(id).isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/create/all")

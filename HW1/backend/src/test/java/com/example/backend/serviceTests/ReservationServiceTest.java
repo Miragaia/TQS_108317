@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -185,7 +186,7 @@ public class ReservationServiceTest {
     @DisplayName("Test get reservations by bus connection id with invalid id")
     public void testGetReservationsByBusConIdWithInvalidId() {
         when(reservationRepository.findByBusConId(1L)).thenReturn(new ArrayList<>());
-        assertThat(reservationService.getReservationsByBusConId(1L)).isEqualTo(null);
+        assertThat(reservationService.getReservationsByBusConId(1L)).isEqualTo(Collections.emptyList());
     }
 
     @Test

@@ -342,10 +342,10 @@ public class BusConnectionControllerTest {
         BusConnection updatedBusConnection = new BusConnection("Coimbra", "Lisboa", "2024-04-27", "2024-04-27", "13:00:00", "14:35:00", 100.0, 50);
 
         // Save the initial bus connection
-    when(busConnectionService.getBusConnectionById(1L)).thenReturn(initialBusConnection);
+        when(busConnectionService.getBusConnectionById(1L)).thenReturn(initialBusConnection);
 
-    // Mock the update operation
-    when(busConnectionService.updateBusConnection(eq(1L), any(BusConnection.class))).thenReturn(updatedBusConnection);
+        // Mock the update operation
+        when(busConnectionService.updateBusConnection(eq(1L), any(BusConnection.class))).thenReturn(updatedBusConnection);
 
 
 

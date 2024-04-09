@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.backend.model.Reservation;
 import com.example.backend.repository.ReservationRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class ReservationService {
 
     public List<Reservation> getReservationsByBusConId(Long busConId) {
         if (reservationRepository.findByBusConId(busConId).isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         return reservationRepository.findByBusConId(busConId);
     }   
@@ -66,8 +67,11 @@ public class ReservationService {
     }
         
     public Reservation updateReservation(Long id, Reservation reservation) {
-        Reservation existingReservation = reservationRepository.findById(id).orElse(null);
-        if (existingReservation != null) {
+        Optional<Reservation> optionalExistingReservation = reservationRepository.findById(id);
+        
+        if (optionalExistingReservation.isPresent()) {
+            Reservation existingReservation = optionalExistingReservation.get();
+        
             existingReservation.setBusConId(reservation.getBusConId());
             existingReservation.setPassengerName(reservation.getPassengerName());
             existingReservation.setAddress(reservation.getAddress());
@@ -78,9 +82,12 @@ public class ReservationService {
             existingReservation.setCardHolderName(reservation.getCardHolderName());
             existingReservation.setCardExpirationMonth(reservation.getCardExpirationMonth());
             existingReservation.setCardExpirationYear(reservation.getCardExpirationYear());
+            
             return reservationRepository.save(existingReservation);
+        } else {
+            return null;
         }
-        return null;
     }
+    
 }
 
