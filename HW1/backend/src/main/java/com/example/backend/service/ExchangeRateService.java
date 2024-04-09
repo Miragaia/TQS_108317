@@ -44,6 +44,10 @@ public class ExchangeRateService {
                 logger.info("Cache miss! Now fetching from API");
                 String requestUrl = apiUrl + "&currencies=" + targetCurrency + "&base_currency=" + baseCurrency ;
                 String response = httpClient.doHttpGet(requestUrl);
+                if (response == null) {
+                    logger.error("Error occurred while fetching exchange rates from API");
+                    return 0.0;
+                }
                 double exchangeRate = parseExchangeRateFromResponse(response, targetCurrency);
 
                 logger.info("Exchange rate from {} to {} is {} retrieved from API", baseCurrency, targetCurrency, exchangeRate);

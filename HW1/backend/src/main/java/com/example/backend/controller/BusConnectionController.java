@@ -136,8 +136,6 @@ public class BusConnectionController {
         return new ResponseEntity<>(busConnection, HttpStatus.OK);
     }
 
-    //novos endpoints 
-
     @PostMapping("/add")
     public ResponseEntity<BusConnection> addBusConnection(@RequestBody BusConnection busConnection) {
         if (busConnection == null) {

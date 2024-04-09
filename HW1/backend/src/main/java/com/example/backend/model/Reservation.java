@@ -15,7 +15,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resId;
     
-    private Integer busConId;
+    private Long busConId;
     private String passengerName;
     private String address;
     private String city;
@@ -29,7 +29,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Integer busConId , String passengerName, String address, String city, String country, String zipCode, String creditCardNumber, String cardHolderName, String cardExpirationMonth, String cardExpirationYear) {
+    public Reservation(Long busConId , String passengerName, String address, String city, String country, String zipCode, String creditCardNumber, String cardHolderName, String cardExpirationMonth, String cardExpirationYear) {
         this.passengerName = passengerName;
         this.address = address;
         this.city = city;
@@ -50,11 +50,11 @@ public class Reservation {
         this.resId = resId;
     }
 
-    public Integer getBusConId() {
+    public Long getBusConId() {
         return busConId;
     }
 
-    public void setBusConId(Integer busConId) {
+    public void setBusConId(Long busConId) {
         this.busConId = busConId;
     }
 

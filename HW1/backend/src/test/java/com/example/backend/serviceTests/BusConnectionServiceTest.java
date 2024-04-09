@@ -1,4 +1,4 @@
-package com.example.backend.UnitTests;
+package com.example.backend.serviceTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -102,7 +102,7 @@ public class BusConnectionServiceTest {
     }
     
     @Test
-    @DisplayName("Test save bus connection")
+    @DisplayName("Test save bus connections")
     public void testSaveAllBusConnections() {
         List<BusConnection> busConnections = new ArrayList<>();
         busConnections.add(busConnection1);
