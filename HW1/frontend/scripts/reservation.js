@@ -41,6 +41,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function fetchReservationsByBusConId(busConId, reservationData) {
         fetch(`http://localhost:8080/api/reservations/bus-connections/${busConId}/reservations`)
             .then(response => {
+                if (response.status === 204) {
+                    console.log('No reservations found for this bus connection');
+                    return [];
+                }
                 if (!response.ok) {
                     throw new Error('Failed to fetch reservations');
                 }

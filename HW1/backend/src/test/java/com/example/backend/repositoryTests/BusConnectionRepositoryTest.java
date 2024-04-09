@@ -22,7 +22,7 @@ import com.example.backend.service.BusConnectionService;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class BusConnectionRepositoryTest {
+class BusConnectionRepositoryTest {
     
     @Autowired
     private BusConnectionRepository busConnectionRepository;
@@ -47,7 +47,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByOriginAndDestinationAndDepartureDate")
-    public void testFindByOriginAndDestinationAndDepartureDate() {
+    void testFindByOriginAndDestinationAndDepartureDate() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -58,7 +58,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByDestination")
-    public void testFindByDestination() {
+    void testFindByDestination() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -69,7 +69,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByOriginAndDestination")
-    public void testFindByOriginAndDestination() {
+    void testFindByOriginAndDestination() {
         BusConnection busConnection = new BusConnection("Aveiro", "Porto", "2021-06-01", "2021-06-01", "08:00:00", "10:20:00", 10.0, 10);
         entityManager.persist(busConnection);
         entityManager.persist(busConnection);
@@ -82,7 +82,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByOrigin")
-    public void testFindByOrigin() {
+    void testFindByOrigin() {
         entityManager.persist(busConnection);
         entityManager.persist(busConnection2);
         entityManager.flush();
@@ -94,7 +94,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByDepartureDate")
-    public void testFindByDepartureDate() {
+    void testFindByDepartureDate() {
         entityManager.persist(busConnection);
         entityManager.persist(busConnection2);
         entityManager.flush();
@@ -106,7 +106,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByOriginAndDestinationAndDepartureDate with no results")
-    public void testFindByOriginAndDestinationAndDepartureDateNoResults() {
+    void testFindByOriginAndDestinationAndDepartureDateNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -117,7 +117,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByDestination with no results")
-    public void testFindByDestinationNoResults() {
+    void testFindByDestinationNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -128,7 +128,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByOriginAndDestination with no results")
-    public void testFindByOriginAndDestinationNoResults() {
+    void testFindByOriginAndDestinationNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -139,7 +139,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByOrigin with no results")
-    public void testFindByOriginNoResults() {
+    void testFindByOriginNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -150,7 +150,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test findByDepartureDate with no results")
-    public void testFindByDepartureDateNoResults() {
+    void testFindByDepartureDateNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -161,7 +161,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test find all bus connections")
-    public void testFindAll() {
+    void testFindAll() {
         Integer totalBusCons = busConnectionRepository.findAll().size();
         entityManager.persist(busConnection);
         entityManager.persist(busConnection2);
@@ -169,13 +169,15 @@ public class BusConnectionRepositoryTest {
 
         List<BusConnection> found = busConnectionRepository.findAll();
 
-        assertThat(found).contains(busConnection, busConnection2);
-        assertThat(found.size()).isEqualTo(totalBusCons + 2);
+        assertThat(found)
+            .hasSize(totalBusCons + 2)
+            .contains(busConnection, busConnection2);
+
     }
 
     @Test
     @DisplayName("Test find bus connection by id")
-    public void testFindById() {
+    void testFindById() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -186,7 +188,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test find bus connection by id with no results")
-    public void testFindByIdNoResults() {
+    void testFindByIdNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -197,7 +199,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test save bus connection")
-    public void testSave() {
+    void testSave() {
         BusConnection saved = busConnectionRepository.save(busConnection);
 
         assertThat(saved).isEqualTo(busConnection);
@@ -205,18 +207,18 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test delete bus connection")
-    public void testDelete() {
+    void testDelete() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
         busConnectionRepository.delete(busConnection);
 
-        assertThat(busConnectionRepository.findById(busConnection.getConId()).orElse(null)).isNull();
+        assertThat(busConnectionRepository.findById(busConnection.getConId())).isNotPresent();
     }
 
     @Test
     @DisplayName("Test update bus connection")
-    public void testUpdate() {
+    void testUpdate() {
         entityManager.persist(busConnection);
         entityManager.flush();
 
@@ -236,7 +238,7 @@ public class BusConnectionRepositoryTest {
 
     @Test
     @DisplayName("Test update bus connection with no results")
-    public void testUpdateNoResults() {
+    void testUpdateNoResults() {
         entityManager.persist(busConnection);
         entityManager.flush();
 

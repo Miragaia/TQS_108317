@@ -17,7 +17,7 @@ import com.example.backend.repository.ReservationRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ReservationRepositoryTest {
+class ReservationRepositoryTest {
     
     @Autowired
     private ReservationRepository reservationRepository;
@@ -27,7 +27,7 @@ public class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Test findByBusConId")
-    public void testFindByBusConId() {
+    void testFindByBusConId() {
         Reservation reservation = new Reservation(1L, "John Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "John Doe", "12", "2023");
         entityManager.persist(reservation);
         entityManager.flush();
@@ -40,7 +40,7 @@ public class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Test findByBusConId Not Found")
-    public void testFindByBusConIdNotFound() {
+    void testFindByBusConIdNotFound() {
         Reservation reservation = new Reservation(1L, "John Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "John Doe", "12", "2023");
         entityManager.persist(reservation);
         entityManager.flush();
@@ -53,7 +53,7 @@ public class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Test findByBusConId Multiple Reservations")
-    public void testFindByBusConIdMultipleReservations() {
+    void testFindByBusConIdMultipleReservations() {
         Reservation reservation = new Reservation(1L, "John Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "John Doe", "12", "2023");
         Reservation reservation2 = new Reservation(1L, "Jane Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "Jane Doe", "12", "2023");
         entityManager.persist(reservation);
@@ -68,7 +68,7 @@ public class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Test findByBusConId Multiple Reservations Different BusConId")
-    public void testFindByBusConIdMultipleReservationsDifferentBusConId() {
+    void testFindByBusConIdMultipleReservationsDifferentBusConId() {
         Reservation reservation = new Reservation(1L, "John Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "John Doe", "12", "2023");
         Reservation reservation2 = new Reservation(2L, "Jane Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "Jane Doe", "12", "2023");
         entityManager.persist(reservation);
@@ -84,7 +84,7 @@ public class ReservationRepositoryTest {
 
     @Test
     @DisplayName("Test findByBusConId Multiple Reservations Different BusConId Not Found")
-    public void testFindByBusConIdMultipleReservationsDifferentBusConIdNotFound() {
+    void testFindByBusConIdMultipleReservationsDifferentBusConIdNotFound() {
         Reservation reservation = new Reservation(1L, "John Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "John Doe", "12", "2023");
         Reservation reservation2 = new Reservation(2L, "Jane Doe", "Rua do Teste", "Aveiro", "Portugal", "3800-000", "1234567890123456", "Jane Doe", "12", "2023");
         entityManager.persist(reservation);
